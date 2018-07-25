@@ -1,0 +1,1 @@
+web: gunicorn filmezz.wsgi
