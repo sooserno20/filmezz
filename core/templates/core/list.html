@@ -1,0 +1,11 @@
+<ol>
+    {% for movie in movie_list %}
+        <li>{{ movie }}
+            <ul>
+                {% for link in movie.movielink_set.all %}
+                    <li><a href={{ link }}>{{ link }}</a></li>
+                {% endfor %}
+            </ul>
+        </li>
+    {% endfor %}
+</ol>

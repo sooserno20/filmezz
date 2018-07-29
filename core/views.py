@@ -1,3 +1,8 @@
 from django.shortcuts import render
+from django.views.generic import ListView
+from .models import Movie
 
-# Create your views here.
+
+class MovieList(ListView):
+    model = Movie
+    template_name = 'core/list.html'
