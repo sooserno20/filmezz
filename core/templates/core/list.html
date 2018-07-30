@@ -1,6 +1,11 @@
+<form method="GET" action="">
+    <input type="text" name='search' placeholder="Search in titles, description">
+    <input type="submit" value="Search">
+</form>
+
 <ol>
     {% for movie in movie_list %}
-        <li>{{ movie }}
+        <li>{{ movie.title }} ({{ movie.description }})
             <ul>
                 {% for link in movie.movielink_set.all %}
                     <li><a href={{ link }}>{{ link }}</a></li>
@@ -9,3 +14,24 @@
         </li>
     {% endfor %}
 </ol>
+
+
+{% if is_paginated %}
+    {% if page_obj.has_previous %}
+      <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
+    {% else %}
+      <span>&laquo;</span>
+    {% endif %}
+    {% for i in paginator.page_range %}
+      {% if page_obj.number == i %}
+        <span>{{ i }}</span>
+      {% else %}
+        <a href="?page={{ i }}">{{ i }}</a>
+      {% endif %}
+    {% endfor %}
+    {% if page_obj.has_next %}
+      <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
+    {% else %}
+      <span>&raquo;</span>
+    {% endif %}
+{% endif %}
