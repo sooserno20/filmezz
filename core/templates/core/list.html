@@ -1,5 +1,5 @@
 <form method="GET" action="">
-    <input type="text" name='search' placeholder="Search in titles, description">
+    <input type="text" value="{{ request.GET.search }}" name='search' placeholder="Search in titles, description">
     <input type="submit" value="Search">
 </form>
 
