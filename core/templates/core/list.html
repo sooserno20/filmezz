@@ -1,37 +1,48 @@
-<form method="GET" action="">
-    <input type="text" value="{{ request.GET.search }}" name='search' placeholder="Search in titles, description">
-    <input type="submit" value="Search">
-</form>
+{% extends "core/base.html" %}
 
-<ol>
-    {% for movie in movie_list %}
-        <li>{{ movie.title }} ({{ movie.description }})
-            <ul>
-                {% for link in movie.movielink_set.all %}
-                    <li><a href={{ link }}>{{ link }}</a></li>
-                {% endfor %}
-            </ul>
-        </li>
-    {% endfor %}
-</ol>
+{% block content %}
+    <div class="container">
+        <div class="page-header">
+            List films
+        </div>
+        <form method="GET" action="">
+            <input type="text" value="{{ request.GET.search }}" name='search' placeholder="Search in titles, description">
+            <input type="submit" value="Search">
+        </form>
+        <ul class="row list-unstyled">
+            {% for movie in movie_list %}
+                <li class="col-md-2 col-sm-3 col-xs-6">{{ movie.title }} ({{ movie.description }})
+                    <ul>
+                        {% for link in movie.movielink_set.all %}
+                            <li><a href={{ link }}>{{ link }}</a></li>
+                        {% endfor %}
+                    </ul>
+                </li>
+            {% endfor %}
+        </ul>
 
-
-{% if is_paginated %}
-    {% if page_obj.has_previous %}
-      <a href="?page={{ page_obj.previous_page_number }}">&laquo;</a>
-    {% else %}
-      <span>&laquo;</span>
-    {% endif %}
-    {% for i in paginator.page_range %}
-      {% if page_obj.number == i %}
-        <span>{{ i }}</span>
-      {% else %}
-        <a href="?page={{ i }}">{{ i }}</a>
-      {% endif %}
-    {% endfor %}
-    {% if page_obj.has_next %}
-      <a href="?page={{ page_obj.next_page_number }}">&raquo;</a>
-    {% else %}
-      <span>&raquo;</span>
-    {% endif %}
-{% endif %}
+        {% if is_paginated %}
+            <div class="text-center">
+                <ul class="pagination">
+                    {% if page_obj.has_previous %}
+                        <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                    {% else %}
+                        <li class=""><span>&laquo;</span></li>
+                    {% endif %}
+                    {% for i in paginator.page_range %}
+                        {% if page_obj.number == i %}
+                            <li class="active"><span>{{ i }}</span></li>
+                        {% else %}
+                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                        {% endif %}
+                    {% endfor %}
+                    {% if page_obj.has_next %}
+                        <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
+                    {% else %}
+                        <li><span>&raquo;</span></li>
+                    {% endif %}
+                </ul>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}
