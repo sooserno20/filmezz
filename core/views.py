@@ -5,7 +5,7 @@ from .models import Movie
 
 class MovieList(ListView):
     model = Movie
-    paginate_by = 10
+    paginate_by = 12
     template_name = 'core/list.html'
 
     def get_queryset(self):
