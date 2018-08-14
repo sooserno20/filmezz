@@ -4,7 +4,7 @@
 {% block content %}
     <div class="container">
         <div class="page-header">
-            List films
+            <h1>List films</h1>
         </div>
         <form method="GET" action="">
             <input type="text" value="{{ request.GET.search }}" name='search' placeholder="Search in titles, description">
@@ -13,19 +13,15 @@
 
         <ul class="row list-unstyled">
             {% for movie in movie_list %}
-                <li class="col-md-2 col-sm-3 col-xs-6">{{ movie.title }} ({{ movie.description }})
-{#                    <ul>#}
-{#                        {% for link in movie.movielink_set.all %}#}
-{#                            <li><a href={{ link }}>{{ link }}</a></li>#}
-{#                        {% endfor %}#}
-{#                    </ul>#}
-
-                    {% if movie.image %}
-                        <img class="cover" src="/media/{{ movie.image }}"/>
-                    {% else %}
-                        <img class="cover" src="{% static "images/_movie_image_default.jpg" %}"/>
-                    {% endif %}
-                </li>
+                <a href="{% url 'movie-detail' movie.id %}">
+                    <li class="col-md-2 col-sm-3 col-xs-6">{{ movie.title }}
+                        {% if movie.image %}
+                            <img class="cover" src="/media/{{ movie.image }}"/>
+                        {% else %}
+                            <img class="cover" src="{% static "images/_movie_image_default.jpg" %}"/>
+                        {% endif %}
+                    </li>
+                </a>
             {% endfor %}
         </ul>
 

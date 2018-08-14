@@ -20,6 +20,7 @@ from django.contrib import admin
 import core.views
 
 urlpatterns = [
-    url(r'^$', core.views.MovieList.as_view(), name='index'),
+    url(r'^$', core.views.MovieList.as_view(), name='movie-list'),
+    url(r'^movie/(?P<pk>\d+)$', core.views.MovieDetail.as_view(), name='movie-detail'),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
