@@ -38,7 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'core'
+    'core',
+    'cloudinary'
 ]
 
 MIDDLEWARE = [
@@ -80,6 +81,14 @@ DATABASES = {
         'ENGINE': 'django.db.backends.sqlite3',
         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
     }
+    # 'default': {
+    #     'ENGINE': 'django.db.backends.postgresql_psycopg2',
+    #     'NAME': 'filmezz',
+    #     'USER': 'postgres',
+    #     'PASSWORD': 'filmezz eu',
+    #     'HOST': 'localhost',
+    #     'PORT': '5432',
+    # }
 }
 
 
@@ -128,4 +137,19 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+CLOUDINARY = {
+  'cloud_name': 'heo3hfgtw',
+  'api_key': '549734456738837',
+  'api_secret': 'NdVMYoTN3bb3cQHfAVOCdgGYksk',
+}
+
 django_heroku.settings(locals())
+
+
+# Cloudinary settings using python code. Run before pycloudinary is used.
+# import cloudinary
+# cloudinary.config(
+#   cloud_name = 'heo3hfgtw',
+#   api_key = '549734456738837',
+#   api_secret = 'NdVMYoTN3bb3cQHfAVOCdgGYksk'
+# )
