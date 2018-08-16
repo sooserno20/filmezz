@@ -12,8 +12,8 @@ class Movie(models.Model):
 
 
 class MovieLink(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.DO_NOTHING)
-    link = models.URLField(unique=True)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    link = models.URLField()
 
     def __str__(self):
         return self.link

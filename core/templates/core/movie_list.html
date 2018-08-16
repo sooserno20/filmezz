@@ -16,7 +16,7 @@
             {% for movie in movie_list %}
                 <a href="{% url 'movie-detail' movie.id %}">
                     <li class="col-md-2 col-sm-3 col-xs-6">
-                        {{ movie.title }}
+                        {{ movie.title | slice:":20"}}
                         {% if movie.image %}
                             {% cloudinary movie.image width=165 height=245 crop="fill" %}
                         {% else %}
