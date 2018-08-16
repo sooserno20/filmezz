@@ -1,5 +1,6 @@
 {% extends "core/base.html" %}
 {% load static %}
+{% load cloudinary %}
 
 {% block content %}
     <div class="container">
@@ -11,7 +12,7 @@
         <div class="row">
             <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
                 {% if movie.image %}
-                    <img class="cover" src="/media/{{ movie.image }}"/>
+                    {% cloudinary movie.image width=260 height=390 crop="fill" %}
                 {% else %}
                     <img class="cover" src="{% static "images/_movie_image_default.jpg" %}"/>
                 {% endif %}
