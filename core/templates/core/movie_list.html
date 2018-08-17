@@ -17,8 +17,9 @@
                 <a href="{% url 'movie-detail' movie.id %}">
                     <li class="col-md-2 col-sm-3 col-xs-6">
                         {{ movie.title | slice:":20"}}
-                        {% if movie.image %}
-                            {% cloudinary movie.image width=165 height=245 crop="fill" %}
+                        {% if movie.image_url %}
+{#                            {% cloudinary movie.image width=165 height=245 crop="fill" %}#}
+                            <img class="cover" src="{{ movie.image_url }}"/>
                         {% else %}
                             <img class="cover" src="{% static "images/_movie_image_default.jpg" %}"/>
                         {% endif %}
