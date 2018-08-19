@@ -26,15 +26,19 @@ def import_filmezz_eu():
         #     else:
         #         print(entry)
         json_data = json.loads(data.read())
-    for entry in json_data:
+    for entry in json_data[:30]:
         if entry['is_series']:
-            # skip series for now
-            continue
-
-        m = Movie(title=entry['name'], description=entry['description'], image_url=entry['image_path'])
-        m.save()
-        for key, link in json.loads(entry['links']).items():
-            m.movielink_set.create(link=link[0])
+            m = Movie(title=entry['name'], description=entry['description'], image_url=entry['image_path'])
+            m.save()
+            for episode, links in json.loads(entry['links']).items():
+                episode_nr = episode.split('.')[0]
+                for host, link in links.items():
+                    m.movielink_set.create(episode_nr=episode_nr, link=link[0])
+        else:
+            m = Movie(title=entry['name'], description=entry['description'], image_url=entry['image_path'])
+            m.save()
+            for host, link in json.loads(entry['links']).items():
+                m.movielink_set.create(link=link[0])
 
 
 if __name__ == '__main__':

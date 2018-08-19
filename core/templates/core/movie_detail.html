@@ -40,7 +40,11 @@
                                 Hardcoded
                             </div>
                             <div class="col-sm-4 col-xs-4">
-                                &nbsp;
+                                {% if link.episode_nr %}
+                                    {{ link.episode_nr }}. episode
+                                {% else %}
+                                    &nbsp;
+                                {% endif %}
                             </div>
                             <div class="col-sm-2 col-xs-2">
                                 &nbsp;
