@@ -14,7 +14,7 @@ class Movie(models.Model):
 
 
 class MovieLink(models.Model):
-    movie = models.ForeignKey(Movie, on_delete=models.CASCADE)
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='links')
     episode_nr = models.PositiveIntegerField(null=True, blank=True)
     link = models.URLField()
 
@@ -23,3 +23,36 @@ class MovieLink(models.Model):
 
     def __str__(self):
         return self.link
+
+
+class Category(models.Model):
+    movies = models.ManyToManyField(Movie, related_name='categories')
+    name = models.CharField(max_length=15)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class Actor(models.Model):
+    movies = models.ManyToManyField(Movie, related_name='actors')
+    name = models.CharField(max_length=70)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name
+
+
+class Director(models.Model):
+    movies = models.ManyToManyField(Movie, related_name='directors')
+    name = models.CharField(max_length=70)
+
+    class Meta:
+        ordering = ['name']
+
+    def __str__(self):
+        return self.name

@@ -23,7 +23,7 @@
             </div>
         </div>
 
-        {% if movie.movielink_set.all %}
+        {% if movie.links.all %}
             <section class="content-box">
                 <h2 class="headline"><span>Links to movies</span></h2>
                 <ul class="list-unstyled table-horizontal url-list">
@@ -34,7 +34,7 @@
                         <div class="col-sm-2 col-xs-2">Hibás link</div>
                         <div class="col-sm-2 col-xs-2">Play</div>
                     </li>
-                    {% for link in movie.movielink_set.all %}
+                    {% for link in movie.links.all %}
                         <li>
                             <div class="col-sm-4 col-xs-4 host">
                                 Hardcoded
