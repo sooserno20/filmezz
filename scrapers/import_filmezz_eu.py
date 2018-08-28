@@ -26,7 +26,7 @@ def import_filmezz_eu():
         #     else:
         #         print(entry)
         json_data = json.loads(data.read())
-    for entry in json_data[826:]:
+    for entry in json_data[:50]:
         try:
             if entry['is_series']:
                 m = Movie(title=entry['name'], description=entry['description'], image_url=entry['image_path'])

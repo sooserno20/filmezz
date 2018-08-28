@@ -8,17 +8,25 @@
             <h1>List films</h1>
         </div>
         <form method="GET" action="">
-            <input type="text" value="{{ request.GET.search }}" name='search' placeholder="Search in titles, description">
-            <input type="submit" value="Search">
+            <input type="text" value="{{ request.GET.search }}" name='search'
+                   placeholder="Search in titles, description">
+            <select name="search_by">
+                <option value="title" selected="selected">By title</option>
+                <option value="actors">By actor</option>
+                <option value="directors">By director</option>
+            </select>
+            <button type="submit" value="Search">
+                <span class="glyphicon glyphicon-search"></span>
+            </button>
         </form>
 
         <ul class="row list-unstyled">
             {% for movie in movie_list %}
                 <a href="{% url 'movie-detail' movie.id %}">
                     <li class="col-md-2 col-sm-3 col-xs-6">
-                        {{ movie.title | slice:":20"}}
+                        {{ movie.title | slice:":20" }}
                         {% if movie.image_url %}
-{#                            {% cloudinary movie.image width=165 height=245 crop="fill" %}#}
+                            {#                            {% cloudinary movie.image width=165 height=245 crop="fill" %}#}
                             <img class="cover" src="{{ movie.image_url }}"/>
                         {% else %}
                             <img class="cover" src="{% static "images/_movie_image_default.jpg" %}"/>

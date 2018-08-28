@@ -9,6 +9,9 @@ class Movie(models.Model):
     image_url = models.URLField(blank=True, null=True)
     is_series = models.BooleanField(default=False)
 
+    class Meta:
+        ordering = ['title']
+
     def __str__(self):
         return self.title
 
