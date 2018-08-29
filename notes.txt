@@ -1,0 +1,187 @@
+<div class="filter" id="hb1" style="">
+						<form action="kereses.php" method="get">
+
+				<div class="row">
+					<div class="col-lg-5 col-sm-4 col-xs-6">
+						<div class="row form-group">
+							<div class="col-sm-5">
+								<label class="control-label" for="q">Minőség</label>
+							</div>
+
+							<div class="col-sm-7">
+								<div class="fancy-select"><select class="custom-select fancified" name="q" style="width: 1px; height: 1px; display: block; position: absolute; top: 0px; left: 0px; opacity: 0;">
+									<option value="0" selected="selected">Összes</option>
+									<option value="2">TV-RIP</option>
+									<option value="3">DVD-RIP</option>
+									<option value="4">BD-RIP</option>
+									<option value="5">HD</option>
+								</select><div class="form-control">Összes</div><ul class="options"><li data-raw-value="0" class="selected">Összes</li><li data-raw-value="2">TV-RIP</li><li data-raw-value="3">DVD-RIP</li><li data-raw-value="4">BD-RIP</li><li data-raw-value="5">HD</li></ul></div>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-5">
+								<label class="control-label" for="l">Nyelv</label>
+							</div>
+
+							<div class="col-sm-7">
+								<div class="fancy-select"><select class="custom-select fancified" name="l" style="width: 1px; height: 1px; display: block; position: absolute; top: 0px; left: 0px; opacity: 0;">
+									<option value="0" selected="selected">Összes</option>
+									<option value="2">Angol-magyar felirattal</option>
+									<option value="3">Magyar nyelvű</option>
+									<option value="4">Német</option>
+									<option value="5">Német-magyar felirattal</option>
+									<option value="6">Japán-magyar felirattal</option>
+									<option value="7">Orosz-magyar felirattal</option>
+									<option value="8">Francia-magyar felirattal</option>
+									<option value="9">Spanyol-magyar felirattal</option>
+									<option value="10">Koreai-magyar felirattal</option>
+									<option value="11">Olasz-magyar felirattal</option>
+									<option value="12">Kínai-magyar felirattal</option>
+								</select><div class="form-control">Összes</div><ul class="options"><li data-raw-value="0" class="selected">Összes</li><li data-raw-value="2">Angol-magyar felirattal</li><li data-raw-value="3">Magyar nyelvű</li><li data-raw-value="4">Német</li><li data-raw-value="5">Német-magyar felirattal</li><li data-raw-value="6">Japán-magyar felirattal</li><li data-raw-value="7">Orosz-magyar felirattal</li><li data-raw-value="8">Francia-magyar felirattal</li><li data-raw-value="9">Spanyol-magyar felirattal</li><li data-raw-value="10">Koreai-magyar felirattal</li><li data-raw-value="11">Olasz-magyar felirattal</li><li data-raw-value="12">Kínai-magyar felirattal</li></ul></div>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-5">
+								<label class="control-label" for="e">Év</label>
+							</div>
+
+							<div class="col-sm-7">
+								<div class="fancy-select"><select class="custom-select fancified" name="e" style="width: 1px; height: 1px; display: block; position: absolute; top: 0px; left: 0px; opacity: 0;">
+									<option value="0" selected="selected">Összes</option>
+									<option value="2018">2018</option><option value="2017">2017</option><option value="2016">2016</option><option value="2015">2015</option><option value="2014">2014</option><option value="2013">2013</option><option value="2012">2012</option><option value="2011">2011</option><option value="2010">2010</option><option value="2009">2009</option><option value="2008">2008</option><option value="2007">2007</option><option value="2006">2006</option><option value="2005">2005</option><option value="2004">2004</option><option value="2003">2003</option><option value="2002">2002</option><option value="2001">2001</option><option value="2000">2000</option><option value="1999">1999</option><option value="1998">1998</option><option value="1997">1997</option><option value="1996">1996</option><option value="1995">1995</option><option value="1994">1994</option><option value="1993">1993</option><option value="1992">1992</option><option value="1991">1991</option><option value="1990">1990</option><option value="1989">1989</option><option value="1988">1988</option><option value="1987">1987</option><option value="1986">1986</option><option value="1985">1985</option><option value="1984">1984</option><option value="1983">1983</option><option value="1982">1982</option><option value="1981">1981</option><option value="1980">1980</option><option value="1979">1979</option><option value="1978">1978</option><option value="1977">1977</option><option value="1976">1976</option><option value="1975">1975</option><option value="1974">1974</option><option value="1973">1973</option><option value="1972">1972</option><option value="1971">1971</option><option value="1970">1970</option><option value="1969">1969</option><option value="1968">1968</option><option value="1967">1967</option><option value="1966">1966</option><option value="1965">1965</option><option value="1964">1964</option><option value="1963">1963</option><option value="1962">1962</option><option value="1961">1961</option><option value="1960">1960</option><option value="1959">1959</option><option value="1958">1958</option><option value="1957">1957</option><option value="1956">1956</option><option value="1955">1955</option><option value="1954">1954</option><option value="1953">1953</option><option value="1952">1952</option><option value="1951">1951</option><option value="1950">1950</option><option value="1949">1949</option><option value="1948">1948</option><option value="1947">1947</option><option value="1946">1946</option><option value="1945">1945</option><option value="1944">1944</option><option value="1943">1943</option><option value="1942">1942</option><option value="1941">1941</option><option value="1940">1940</option><option value="1939">1939</option><option value="1938">1938</option><option value="1937">1937</option><option value="1936">1936</option><option value="1935">1935</option><option value="1934">1934</option><option value="1933">1933</option><option value="1932">1932</option><option value="1931">1931</option><option value="1930">1930</option><option value="1929">1929</option><option value="1928">1928</option><option value="1927">1927</option><option value="1926">1926</option><option value="1925">1925</option><option value="1924">1924</option><option value="1923">1923</option><option value="1922">1922</option><option value="1921">1921</option><option value="1920">1920</option><option value="1919">1919</option><option value="1918">1918</option><option value="1917">1917</option><option value="1916">1916</option><option value="1915">1915</option><option value="1914">1914</option><option value="1913">1913</option><option value="1912">1912</option><option value="1911">1911</option><option value="1910">1910</option><option value="1909">1909</option><option value="1908">1908</option><option value="1907">1907</option><option value="1906">1906</option><option value="1905">1905</option><option value="1904">1904</option><option value="1903">1903</option><option value="1902">1902</option><option value="1901">1901</option><option value="1900">1900</option>								</select><div class="form-control">Összes</div><ul class="options"><li data-raw-value="0" class="selected">Összes</li><li data-raw-value="2018">2018</li><li data-raw-value="2017">2017</li><li data-raw-value="2016">2016</li><li data-raw-value="2015">2015</li><li data-raw-value="2014">2014</li><li data-raw-value="2013">2013</li><li data-raw-value="2012">2012</li><li data-raw-value="2011">2011</li><li data-raw-value="2010">2010</li><li data-raw-value="2009">2009</li><li data-raw-value="2008">2008</li><li data-raw-value="2007">2007</li><li data-raw-value="2006">2006</li><li data-raw-value="2005">2005</li><li data-raw-value="2004">2004</li><li data-raw-value="2003">2003</li><li data-raw-value="2002">2002</li><li data-raw-value="2001">2001</li><li data-raw-value="2000">2000</li><li data-raw-value="1999">1999</li><li data-raw-value="1998">1998</li><li data-raw-value="1997">1997</li><li data-raw-value="1996">1996</li><li data-raw-value="1995">1995</li><li data-raw-value="1994">1994</li><li data-raw-value="1993">1993</li><li data-raw-value="1992">1992</li><li data-raw-value="1991">1991</li><li data-raw-value="1990">1990</li><li data-raw-value="1989">1989</li><li data-raw-value="1988">1988</li><li data-raw-value="1987">1987</li><li data-raw-value="1986">1986</li><li data-raw-value="1985">1985</li><li data-raw-value="1984">1984</li><li data-raw-value="1983">1983</li><li data-raw-value="1982">1982</li><li data-raw-value="1981">1981</li><li data-raw-value="1980">1980</li><li data-raw-value="1979">1979</li><li data-raw-value="1978">1978</li><li data-raw-value="1977">1977</li><li data-raw-value="1976">1976</li><li data-raw-value="1975">1975</li><li data-raw-value="1974">1974</li><li data-raw-value="1973">1973</li><li data-raw-value="1972">1972</li><li data-raw-value="1971">1971</li><li data-raw-value="1970">1970</li><li data-raw-value="1969">1969</li><li data-raw-value="1968">1968</li><li data-raw-value="1967">1967</li><li data-raw-value="1966">1966</li><li data-raw-value="1965">1965</li><li data-raw-value="1964">1964</li><li data-raw-value="1963">1963</li><li data-raw-value="1962">1962</li><li data-raw-value="1961">1961</li><li data-raw-value="1960">1960</li><li data-raw-value="1959">1959</li><li data-raw-value="1958">1958</li><li data-raw-value="1957">1957</li><li data-raw-value="1956">1956</li><li data-raw-value="1955">1955</li><li data-raw-value="1954">1954</li><li data-raw-value="1953">1953</li><li data-raw-value="1952">1952</li><li data-raw-value="1951">1951</li><li data-raw-value="1950">1950</li><li data-raw-value="1949">1949</li><li data-raw-value="1948">1948</li><li data-raw-value="1947">1947</li><li data-raw-value="1946">1946</li><li data-raw-value="1945">1945</li><li data-raw-value="1944">1944</li><li data-raw-value="1943">1943</li><li data-raw-value="1942">1942</li><li data-raw-value="1941">1941</li><li data-raw-value="1940">1940</li><li data-raw-value="1939">1939</li><li data-raw-value="1938">1938</li><li data-raw-value="1937">1937</li><li data-raw-value="1936">1936</li><li data-raw-value="1935">1935</li><li data-raw-value="1934">1934</li><li data-raw-value="1933">1933</li><li data-raw-value="1932">1932</li><li data-raw-value="1931">1931</li><li data-raw-value="1930">1930</li><li data-raw-value="1929">1929</li><li data-raw-value="1928">1928</li><li data-raw-value="1927">1927</li><li data-raw-value="1926">1926</li><li data-raw-value="1925">1925</li><li data-raw-value="1924">1924</li><li data-raw-value="1923">1923</li><li data-raw-value="1922">1922</li><li data-raw-value="1921">1921</li><li data-raw-value="1920">1920</li><li data-raw-value="1919">1919</li><li data-raw-value="1918">1918</li><li data-raw-value="1917">1917</li><li data-raw-value="1916">1916</li><li data-raw-value="1915">1915</li><li data-raw-value="1914">1914</li><li data-raw-value="1913">1913</li><li data-raw-value="1912">1912</li><li data-raw-value="1911">1911</li><li data-raw-value="1910">1910</li><li data-raw-value="1909">1909</li><li data-raw-value="1908">1908</li><li data-raw-value="1907">1907</li><li data-raw-value="1906">1906</li><li data-raw-value="1905">1905</li><li data-raw-value="1904">1904</li><li data-raw-value="1903">1903</li><li data-raw-value="1902">1902</li><li data-raw-value="1901">1901</li><li data-raw-value="1900">1900</li></ul></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-5 col-sm-4 col-xs-6">
+						<div class="row form-group">
+							<div class="col-sm-5">
+								<label class="control-label" for="c">Kategória</label>
+							</div>
+
+							<div class="col-sm-7">
+								<div class="fancy-select"><select class="custom-select fancified" name="c" style="width: 1px; height: 1px; display: block; position: absolute; top: 0px; left: 0px; opacity: 0;">
+									<option value="0" selected="selected">Összes</option>
+									<option value="18">18+</option><option value="akcio">Akció</option><option value="animacio">Animáció</option><option value="anime">Anime</option><option value="csaladi">Családi</option><option value="dokumentum">Dokumentum</option><option value="dorama">Ázsiai</option><option value="drama">Dráma</option><option value="eletrajzi">Életrajzi</option><option value="fantasy">Fantasy</option><option value="haborus">Háborús</option><option value="horror">Horror</option><option value="kaland">Kaland</option><option value="katasztrofa">Katasztrófafilm</option><option value="krimi">Krimi</option><option value="magyar">Magyar film</option><option value="misztikus">Misztikus</option><option value="romantikus">Romantikus</option><option value="sci-fi">Sci-Fi</option><option value="sorozat">TV-Sorozat</option><option value="sport">Sport</option><option value="thriller">Thriller</option><option value="tortenelmi">Történelmi</option><option value="vigjatek">Vígjáték</option><option value="western">Western</option><option value="zenes">Zenés</option>								</select><div class="form-control">Összes</div><ul class="options"><li data-raw-value="0" class="selected">Összes</li><li data-raw-value="18">18+</li><li data-raw-value="akcio">Akció</li><li data-raw-value="animacio">Animáció</li><li data-raw-value="anime">Anime</li><li data-raw-value="csaladi">Családi</li><li data-raw-value="dokumentum">Dokumentum</li><li data-raw-value="dorama">Ázsiai</li><li data-raw-value="drama">Dráma</li><li data-raw-value="eletrajzi">Életrajzi</li><li data-raw-value="fantasy">Fantasy</li><li data-raw-value="haborus">Háborús</li><li data-raw-value="horror">Horror</li><li data-raw-value="kaland">Kaland</li><li data-raw-value="katasztrofa">Katasztrófafilm</li><li data-raw-value="krimi">Krimi</li><li data-raw-value="magyar">Magyar film</li><li data-raw-value="misztikus">Misztikus</li><li data-raw-value="romantikus">Romantikus</li><li data-raw-value="sci-fi">Sci-Fi</li><li data-raw-value="sorozat">TV-Sorozat</li><li data-raw-value="sport">Sport</li><li data-raw-value="thriller">Thriller</li><li data-raw-value="tortenelmi">Történelmi</li><li data-raw-value="vigjatek">Vígjáték</li><li data-raw-value="western">Western</li><li data-raw-value="zenes">Zenés</li></ul></div>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-5">
+								<label class="control-label" for="t">Típus</label>
+							</div>
+
+							<div class="col-sm-7">
+								<div class="fancy-select"><select class="custom-select fancified" name="t" style="width: 1px; height: 1px; display: block; position: absolute; top: 0px; left: 0px; opacity: 0;">
+									<option value="0" selected="selected">Összes</option>
+									<option value="1">Csak film</option>
+									<option value="2">Csak sorozat</option>
+								</select><div class="form-control">Összes</div><ul class="options"><li data-raw-value="0" class="selected">Összes</li><li data-raw-value="1">Csak film</li><li data-raw-value="2">Csak sorozat</li></ul></div>
+							</div>
+						</div>
+
+						<div class="row form-group">
+							<div class="col-sm-5">
+								<label class="control-label" for="h">Tárhely</label>
+							</div>
+
+							<div class="col-sm-7">
+								<div class="fancy-select"><select class="custom-select fancified" name="h" style="width: 1px; height: 1px; display: block; position: absolute; top: 0px; left: 0px; opacity: 0;">
+									<option value="0" selected="selected">Összes</option>
+
+									<option value="viki.com">Viki.com</option><option value="indavideo.hu">Indavideo</option><option value="youtube.com">Youtube</option><option value="vidto.me">Vidto.me</option><option value="vidzi.tv">Vidzi.tv</option><option value="flashx.tv">Flashx.tv</option><option value="mega.co.nz">Mega</option><option value="raptu.com">Raptu.com</option><option value="thevideo.me">TheVideo.me</option><option value="openload.co">Openload.co</option><option value="estream.to">Estream.to</option><option value="drive.google.com">Google Drive</option><option value="vidlox.tv">Vidlox.tv</option><option value="videakid.hu">Videakid</option><option value="videa.hu">Videa.hu</option><option value="vidup.me">Vidup.me</option><option value="ok.ru">Ok.ru</option><option value="vidoza.net">Vidoza.net</option><option value="kingvid.tv">Kingvid.tv </option><option value="faststream.ws">Faststream.ws</option>								</select><div class="form-control">Összes</div><ul class="options"><li data-raw-value="0" class="selected">Összes</li><li data-raw-value="viki.com">Viki.com</li><li data-raw-value="indavideo.hu">Indavideo</li><li data-raw-value="youtube.com">Youtube</li><li data-raw-value="vidto.me">Vidto.me</li><li data-raw-value="vidzi.tv">Vidzi.tv</li><li data-raw-value="flashx.tv">Flashx.tv</li><li data-raw-value="mega.co.nz">Mega</li><li data-raw-value="raptu.com">Raptu.com</li><li data-raw-value="thevideo.me">TheVideo.me</li><li data-raw-value="openload.co">Openload.co</li><li data-raw-value="estream.to">Estream.to</li><li data-raw-value="drive.google.com">Google Drive</li><li data-raw-value="vidlox.tv">Vidlox.tv</li><li data-raw-value="videakid.hu">Videakid</li><li data-raw-value="videa.hu">Videa.hu</li><li data-raw-value="vidup.me">Vidup.me</li><li data-raw-value="ok.ru">Ok.ru</li><li data-raw-value="vidoza.net">Vidoza.net</li><li data-raw-value="kingvid.tv">Kingvid.tv </li><li data-raw-value="faststream.ws">Faststream.ws</li></ul></div>
+							</div>
+						</div>
+					</div>
+
+					<div class="col-lg-2 col-sm-4 col-xs-12">
+						<p><strong>Rendezés</strong></p>
+
+						<div class="radio">
+							<label class="custom-option button">
+								<input type="radio" name="o" id="rabc" value="abc" checked="checked">
+								<span class="button-radio"></span>
+							</label>
+							<label for="rabc">ABC</label>
+						</div>
+
+						<div class="radio">
+							<label class="custom-option button">
+								<input type="radio" name="o" id="rnezettseg" value="nezettseg">
+								<span class="button-radio"></span>
+							</label>
+							<label for="rnezettseg">Nézettség</label>
+						</div>
+
+						<div class="radio">
+							<label class="custom-option button">
+								<input type="radio" name="o" id="rfeltoltve" value="feltoltve">
+								<span class="button-radio"></span>
+							</label>
+							<label for="rfeltoltve">Feltöltési idő</label>
+						</div>
+
+						<div class="radio">
+							<label class="custom-option button">
+								<input type="radio" name="o" id="rimdb" value="imdbrating">
+								<span class="button-radio"></span>
+							</label>
+							<label for="rimdb">IMDb pontszám</label>
+						</div>
+					</div>
+				</div>
+
+				<div class="form-group">
+					<input class="btn btn-block btn-success" type="submit" value="Keresés">
+				</div>
+
+			</form>
+
+		</div>
+
+<a href="javascript:void(0);" onclick="hbtoogle(1);">Részletes keresés</a><
+
+<script>
+        //catscoo=$.cookie('filmezz_cats');
+    //advscoo=$.cookie('filmezz_advs');
+    hb=$.cookie('flz_hb');
+
+//  0: minden csukva
+//  1: kereső
+//  2: részletes cucc
+//  3: vissza a találatokhoz
+
+function hbtoogle(a){
+    if(hb==a){
+        $('#hb'+a).slideUp(300);
+        hb=0;
+        $.cookie('flz_hb',hb);
+    }else{
+        $('#hb'+hb).slideUp(300);
+        $('#hb'+a).slideDown(300);
+        hb=a;
+        $.cookie('flz_hb',hb);
+    }
+
+    if(hb==a){
+        if(a == 1) {
+            $('#menu-categories').removeClass('active');
+            $('#menu-filter').addClass('active');
+        } else if(a == 2) {
+            $('#menu-categories').addClass('active');
+            $('#menu-filter').removeClass('active');
+        }
+    }
+    else {
+        $('#menu-categories').removeClass('active');
+        $('#menu-filter').removeClass('active');
+    }
+}
+</script>
+
+OTHER FILM SITES:
+https://123movie.cc/ -- 412,467 visits / day
+https://moovie.cc/   -- 29,779 visits / day
+filmezz.eu           -- 89,035 visits / day

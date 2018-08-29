@@ -11,7 +11,7 @@
             <input type="text" value="{{ request.GET.search }}" name='search'
                    placeholder="Search in titles, description">
             <select name="search_by">
-                <option value="title" selected="selected">By title</option>
+                <option value="title" selected>By title</option>
                 <option value="actors">By actor</option>
                 <option value="directors">By director</option>
             </select>
@@ -19,6 +19,33 @@
                 <span class="glyphicon glyphicon-search"></span>
             </button>
         </form>
+
+        <div id="extended_search">
+            <div class="row">
+                <div class="col-lg-3 col-xs-6">
+                    Category
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <select name="category">
+                        <option value='All' selected>All</option>
+                        {% for option in category_options %}
+                            <option value={{ option }}>{{ option }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    Type
+                </div>
+                <div class="col-lg-3 col-xs-6">
+                    <select name="type">
+                        <option value='All' selected>All</option>
+                        <option value='movie'>Only movies</option>
+                        <option value='series'>Only series</option>
+                    </select>
+                </div>
+
+            </div>
+        </div>
 
         <ul class="row list-unstyled">
             {% for movie in movie_list %}
