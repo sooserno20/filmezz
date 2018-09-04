@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
     <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <title>Filmek</title>
+    <title>MOVIESITENAME</title>
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
     <script
@@ -15,7 +15,62 @@
     </script>
 </head>
 <body>
-    {% block content %}
-    {% endblock %}
+    <div class="container">
+        {% block header %}
+        <nav class="navbar navbar-default">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <a href="{% url 'movie-list' %}">
+                        <img src="{% static 'images/logo.png' %}" width="150" />
+                    </a>
+                </div>
+                <div class="navbar-right margin-top-17">
+                    <form method="GET" action="" class="form-inline">
+                        <div class="form-group">
+                            <input type="text" value="{{ request.GET.search }}" name='search'
+                               placeholder="Search in titles, description" class="form-control">
+
+                        </div>
+                        <div class="form-group">
+                            <select name="search_by" class="form-control">
+                                <option value="title" selected>Cim szerint</option>
+                                <option value="actors">Szinesz szerint</option>
+                                <option value="directors">Rendezo szerint</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail3">Kategoria</label>
+                            <select name="category" class="form-control">
+                                <option value='All' selected>Osszes</option>
+                                {% for option in category_options %}
+                                    <option value={{ option }}>{{ option }}</option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="exampleInputEmail3">Tipus</label>
+                            <select name="category" class="form-control">
+                                <option value='All' selected>Osszes</option>
+                                <option value='movie'>Csak filmek</option>
+                                <option value='series'>Csak sorozatok</option>
+                            </select>
+                        </div>
+                        <button type="submit" value="Search" class="btn btn-default">
+                            <span class="glyphicon glyphicon-search"></span>&nbsp;Kereses
+                        </button>
+                    </form>
+                </div>
+            </div>
+        </nav>
+        {% endblock %}
+        {% block content %}
+        {% endblock %}
+        {% block footer %}
+        <footer style="margin-top 50px;">
+            <hr>
+            <p>© 2018 All rights reserved by MOVIESITENAME.</p>
+        </footer>
+        {% endblock footer %}
+    </div>
 </body>
 </html>
