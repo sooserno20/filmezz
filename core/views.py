@@ -1,6 +1,8 @@
+from django.http import HttpResponseRedirect, HttpResponse
 from django.views.generic import DetailView, ListView
-from .models import Movie, Category
+from .models import Movie, Category, MovieLink
 import unicodedata
+import requests
 
 
 def strip_accents(s):
@@ -42,3 +44,15 @@ class MovieList(ListView):
 
 class MovieDetail(DetailView):
     model = Movie
+
+
+def movie_link(request, movie_id, link_id):
+    m_link = MovieLink.objects.filter(id=link_id).first()
+
+    if m_link:
+        response = requests.get('http://sh.st/st/1b892a9f5fc5d5fb733633246ec2573d/{}'.format(m_link.link))
+        # DECOMMENT FOR AD LINK
+        return HttpResponseRedirect(response.url)
+        return HttpResponseRedirect(m_link.link)
+    else:
+        return HttpResponse()

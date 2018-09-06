@@ -9,6 +9,7 @@ pbr==4.2.0
 pipfile==0.0.2
 psycopg2==2.7.5
 pytz==2018.5
+requests==2.19.1
 six==1.11.0
 toml==0.9.4
 urllib3==1.23

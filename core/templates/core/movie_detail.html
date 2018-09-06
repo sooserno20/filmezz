@@ -50,7 +50,8 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ link }}" target="_blank">
+{#                        <a href="{{ link }}" target="_blank">#}
+                        <a href="{% url 'movie-link' movie.id link.id %}" target="_blank">
                             <span class="glyphicon glyphicon-film">{{ link | slice:":20" }}</span>
 
                         </a>
