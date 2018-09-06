@@ -15,6 +15,13 @@ class MovieList(ListView):
         data = super().get_context_data(**kwargs)
         category_options = list(Category.objects.all().values_list('name', flat=True))
         data['category_options'] = sorted([strip_accents(s) for s in category_options])
+        data['end_minus_five'] = data['paginator'].page_range.stop - 5
+        data['last_page'] = data['paginator'].page_range.stop - 1
+        # data['before_last_page'] = data['paginator'].page_range.stop - 2
+        page_no = data['page_obj'].number
+        begin = page_no - 2 if page_no > 3 else 2
+        end = page_no + 3 if page_no < data['last_page'] - 2 else min(page_no + 2, data['last_page'])
+        data['custom_page_range'] = range(begin, end)
         return data
 
     def get_queryset(self):

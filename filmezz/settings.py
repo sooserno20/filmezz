@@ -153,3 +153,4 @@ django_heroku.settings(locals())
 #   api_key = '549734456738837',
 #   api_secret = 'NdVMYoTN3bb3cQHfAVOCdgGYksk'
 # )
+TEMPLATE_DEBUG = True
