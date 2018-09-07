@@ -25,7 +25,7 @@
                     </a>
                 </div>
                 <div class="navbar-right margin-top-17">
-                    <form method="GET" action="" class="form-inline">
+                    <form method="GET" action="{% url 'movie-list' %}" class="form-inline">
                         <div class="form-group">
                             <input type="text" value="{{ request.GET.search }}" name='search'
                                placeholder="Search in titles, description" class="form-control">
