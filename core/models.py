@@ -8,6 +8,7 @@ class Movie(models.Model):
     # image = CloudinaryField('image', null=True, blank=True)
     image_url = models.URLField(blank=True, null=True)
     is_series = models.BooleanField(default=False)
+    imdb_score = models.FloatField(default=0)
 
     class Meta:
         ordering = ['title']

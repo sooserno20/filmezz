@@ -19,6 +19,9 @@
         </div>
         <div class="col-lg-9 col-md-8 col-sm-6 col-xs-12">
             <span>{{ movie.description }}</span>
+            <br>
+            <br>
+            <strong>IMDB score: </strong>{{ movie.imdb_score }}
         </div>
     </div>
 
@@ -50,7 +53,6 @@
                         </a>
                     </td>
                     <td>
-{#                        <a href="{{ link }}" target="_blank">#}
                         <a href="{% url 'movie-link' movie.id link.id %}" target="_blank">
                             <span class="glyphicon glyphicon-film">{{ link | slice:":20" }}</span>
 

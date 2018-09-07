@@ -1,5 +1,11 @@
 import os
+from os.path import abspath, dirname
+
 import django
+import sys
+
+project_path = dirname(dirname(abspath(__file__)))
+sys.path.append(project_path)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'filmezz.settings'
 django.setup()
 
@@ -36,7 +42,8 @@ def import_filmezz_eu():
                     for host, link in links.items():
                         m.links.create(episode_nr=episode_nr, link=link[0])
             else:
-                m = Movie(title=entry['name'], description=entry['description'], image_url=entry['image_path'])
+                m = Movie(title=entry['name'], description=entry['description'],
+                          image_url=entry['image_path'], imdb_score=float(entry['imdb_score']))
                 m.save()
                 for host, link in json.loads(entry['links']).items():
                     m.links.create(link=link[0])
