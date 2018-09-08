@@ -22,6 +22,12 @@
             <br>
             <br>
             <strong>IMDB score: </strong>{{ movie.imdb_score }}
+            <br>
+            <strong>Category: </strong>{{ movie.categories.all | join:", " }}
+            <br>
+            <strong>Directors: </strong>{{ movie.directors.all | join:", " }}
+            <br>
+            <strong>Actors: </strong>{{ movie.actors.all | join:", " }}
         </div>
     </div>
 
