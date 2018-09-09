@@ -74,9 +74,9 @@ def movie_link(request, movie_id, link_id):
     m_link = MovieLink.objects.filter(id=link_id).first()
 
     if m_link:
-        response = requests.get('http://sh.st/st/1b892a9f5fc5d5fb733633246ec2573d/{}'.format(m_link.link))
+        # response = requests.get('http://sh.st/st/1b892a9f5fc5d5fb733633246ec2573d/{}'.format(m_link.link))
         # DECOMMENT FOR AD LINK
-        return HttpResponseRedirect(response.url)
+        # return HttpResponseRedirect(response.url)
         return HttpResponseRedirect(m_link.link)
     else:
         return HttpResponse()
