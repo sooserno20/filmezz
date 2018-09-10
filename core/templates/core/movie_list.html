@@ -8,7 +8,7 @@
     </div>
     <div class="row">
         {% for movie in movie_list %}
-            <div class="col-lg-3 col-md-3 col-sm-4 text-center" style="padding-top: 10px; padding-bottom: 10px;">
+            <div class="col-lg-3 col-md-3 col-sm-4 text-center" style="padding-top: 10px; padding-bottom: 10px; ">
                 <a href="{% url 'movie-detail' movie.id %}">
                     {% if movie.image_url %}
                         {# {% cloudinary movie.image width=165 height=245 crop="fill" %} #}
@@ -24,7 +24,6 @@
                 </h5>
             </div>
         {% endfor %}
-
     </div>
         <ul class="row list-unstyled">
         </ul>

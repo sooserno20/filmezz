@@ -1,8 +1,10 @@
 from django.http import HttpResponseRedirect, HttpResponse
+from django.urls import reverse
 from django.views.generic import DetailView, ListView
 from django.db.models import Q
 from .models import Movie, Category, MovieLink
 import unicodedata
+import random
 import requests
 
 
@@ -34,10 +36,14 @@ class MovieList(ListView):
         return data
 
     def get_queryset(self):
+        id = self.request.GET.get('id', None)
         search_by = self.request.GET.get('search_by', None)
         search = self.request.GET.get('search', None)
         category = self.request.GET.get('category', None)
         type = self.request.GET.get('type', None)
+
+        if id:
+            return Movie.objects.filter(id=id)
 
         query_filter = []
         if search:
@@ -48,13 +54,13 @@ class MovieList(ListView):
             elif search_by == 'directors':
                 query_filter.append(Q(directors__name__icontains=search))
 
-        if category and category != 'All':
+        if category and category != 'all':
             query_filter.append(Q(categories__name__icontains=category))
 
-        if type and type != 'All':
-            if type == 'Movie':
+        if type and type != 'all':
+            if type == 'movie':
                 query_filter.append(Q(is_series=False))
-            elif type == 'Series':
+            elif type == 'series':
                 query_filter.append(Q(is_series=True))
 
         return self.model.objects.filter(*query_filter)
@@ -80,3 +86,35 @@ def movie_link(request, movie_id, link_id):
         return HttpResponseRedirect(m_link.link)
     else:
         return HttpResponse()
+
+
+def suggest_random_movie(request):
+    random.seed()
+    try:
+        imdb_score = int(request.GET.get('imdb_score', None))
+    except (ValueError, TypeError):
+        imdb_score = None
+    category = request.GET.get('category', None)
+    type_ = request.GET.get('type', None)
+
+    query_filter = []
+    if imdb_score:
+        query_filter.append(Q(imdb_score__gte=imdb_score))
+    if category and category != 'all':
+        query_filter.append(Q(categories__name=category))
+    if type_ and type_ != 'all':
+        if type_ == 'series':
+            query_filter.append(Q(is_series=True))
+        elif type_ == 'movie':
+            query_filter.append(Q(is_series=False))
+
+    query = Movie.objects.filter(*query_filter)
+    get_string = '{0}?id={1}&category={2}&type={3}&imdb_score={4}'
+    if query:
+        random_movie = query[random.randint(0, len(query) - 1)]
+        return HttpResponseRedirect(get_string.format(reverse('movie-list'), random_movie.id,
+                                                      category or 'all', type_ or 'all', imdb_score or 5))
+
+    # this will return empty query in movie list
+    return HttpResponseRedirect(get_string.format(reverse('movie-list'), '-1', category or 'all',
+                                                  type_ or 'all', imdb_score or 5))
