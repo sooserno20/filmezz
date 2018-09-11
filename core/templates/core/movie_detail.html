@@ -45,7 +45,7 @@
                 </tr>
                 {% for link in movie.links.all %}
                 <tr>
-                    <td>Hardcoded</td>
+                    <td>{{ link.host }}</td>
                     <td>
                         {% if link.episode_nr %}
                             {{ link.episode_nr }}. episode
@@ -54,9 +54,9 @@
                         {% endif %}
                     </td>
                     <td>
-                        <a href="#" style="color: red;">
-                            <span class="glyphicon glyphicon-ban-circle"></span>
-                        </a>
+{#                        <a href="#" style="color: red;">#}
+{#                            <span class="glyphicon glyphicon-ban-circle"></span>#}
+{#                        </a>#}
                     </td>
                     <td>
                         <a href="{% url 'movie-link' movie.id link.id %}" target="_blank">

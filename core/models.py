@@ -19,6 +19,9 @@ class Movie(models.Model):
 
 class MovieLink(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='links')
+    host = models.CharField(null=True, blank=True, max_length=20)
+    # TODO: choices from language package, translate from googletrans
+    language = models.CharField(null=True, blank=True, max_length=20)
     episode_nr = models.PositiveIntegerField(null=True, blank=True)
     link = models.URLField()
 

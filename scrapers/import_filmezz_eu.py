@@ -40,13 +40,13 @@ def import_filmezz_eu():
                 for episode, links in json.loads(entry['links']).items():
                     episode_nr = episode.split('.')[0]
                     for host, link in links.items():
-                        m.links.create(episode_nr=episode_nr, link=link[0])
+                        m.links.create(host=host, episode_nr=episode_nr, language=link[0][1], link=link[0][0])
             else:
                 m = Movie(title=entry['name'], description=entry['description'],
                           image_url=entry['image_path'], imdb_score=float(entry['imdb_score']))
                 m.save()
                 for host, link in json.loads(entry['links']).items():
-                    m.links.create(link=link[0])
+                    m.links.create(host=host, language=link[0][1], link=link[0][0])
             d, created = Director.objects.get_or_create(name=entry['director'])
             m.directors.add(d)
             for actor in json.loads(entry['actors']):
