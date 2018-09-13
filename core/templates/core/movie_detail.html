@@ -1,6 +1,7 @@
 {% extends "core/base.html" %}
 {% load static %}
 {% load cloudinary %}
+{% load is_number %}
 
 {% block content %}
     <div class="page-header">
@@ -40,7 +41,7 @@
                 <tr>
                     <th>Host</th>
                     <th>Info</th>
-                    <th>Hibás link</th>
+{#                    <th>Hibás link</th>#}
                     <th>Play</th>
                 </tr>
                 {% for link in movie.links.all %}
@@ -48,16 +49,23 @@
                     <td>{{ link.host }}</td>
                     <td>
                         {% if link.episode_nr %}
-                            {{ link.episode_nr }}. episode
+                            {% with episode_is_number=link.episode_nr|is_number %}
+                                {% if episode_is_number %}
+                                    {{ link.episode_nr }}. episode
+                                {% else %}
+                                    {{ link.episode_nr }}
+                                {% endif %}
+                            {% endwith %}
                         {% else %}
                             &nbsp;
                         {% endif %}
                     </td>
-                    <td>
+{#                Hibas link oszlop #}
+{#                    <td>#}
 {#                        <a href="#" style="color: red;">#}
 {#                            <span class="glyphicon glyphicon-ban-circle"></span>#}
 {#                        </a>#}
-                    </td>
+{#                    </td>#}
                     <td>
                         <a href="{% url 'movie-link' movie.id link.id %}" target="_blank">
                             <span class="glyphicon glyphicon-film">{{ link | slice:":20" }}</span>

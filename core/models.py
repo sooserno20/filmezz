@@ -9,6 +9,7 @@ class Movie(models.Model):
     image_url = models.URLField(blank=True, null=True)
     is_series = models.BooleanField(default=False)
     imdb_score = models.FloatField(default=0)
+    year = models.CharField(null=True, blank=True, max_length=7)
 
     class Meta:
         ordering = ['title']
@@ -22,7 +23,7 @@ class MovieLink(models.Model):
     host = models.CharField(null=True, blank=True, max_length=20)
     # TODO: choices from language package, translate from googletrans
     language = models.CharField(null=True, blank=True, max_length=20)
-    episode_nr = models.PositiveIntegerField(null=True, blank=True)
+    episode_nr = models.CharField(null=True, blank=True, max_length=15)
     link = models.URLField()
 
     class Meta:

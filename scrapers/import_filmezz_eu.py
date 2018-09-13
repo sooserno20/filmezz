@@ -11,7 +11,6 @@ django.setup()
 
 import json
 import sys
-from json import JSONDecodeError
 from cloudinary.uploader import upload
 
 from core.models import Movie, Director, Actor, Category
@@ -19,34 +18,29 @@ from core.models import Movie, Director, Actor, Category
 
 def import_filmezz_eu():
     with open(sys.argv[1]) as data:
-        # for line in data:
-        #     try:
-        #         if line[-1] == '\n':
-        #             line = line[:-1]
-        #         if line[-1] == ',':
-        #             line = line[:-1]
-        #
-        #         entry = json.loads(line)
-        #     except JSONDecodeError:
-        #         pass
-        #     else:
-        #         print(entry)
         json_data = json.loads(data.read())
     for entry in json_data[:50]:
         try:
+            entry['name'] = entry['name'].strip()
+            if entry['name'][-1] == ')' and entry['name'][-6] == '(':
+                name = entry['name'][:-6]
+                year = entry['name'][-5:-1]
+            else:
+                name = entry['name']
+                year = ''
             if entry['is_series']:
-                m = Movie(title=entry['name'], description=entry['description'], image_url=entry['image_path'])
-                m.save()
+                m, created = Movie.objects.get_or_create(title=name, description=entry['description'],
+                                                         image_url=entry['image_path'], year=year)
                 for episode, links in json.loads(entry['links']).items():
                     episode_nr = episode.split('.')[0]
                     for host, link in links.items():
-                        m.links.create(host=host, episode_nr=episode_nr, language=link[0][1], link=link[0][0])
+                        m.links.get_or_create(host=host, episode_nr=episode_nr, language=link[0][1], link=link[0][0])
             else:
-                m = Movie(title=entry['name'], description=entry['description'],
-                          image_url=entry['image_path'], imdb_score=float(entry['imdb_score']))
-                m.save()
+                m, created = Movie.objects.get_or_create(title=name, description=entry['description'],
+                                                         image_url=entry['image_path'],
+                                                         imdb_score=float(entry['imdb_score']), year=year)
                 for host, link in json.loads(entry['links']).items():
-                    m.links.create(host=host, language=link[0][1], link=link[0][0])
+                    m.links.get_or_create(host=host, language=link[0][1], link=link[0][0])
             d, created = Director.objects.get_or_create(name=entry['director'])
             m.directors.add(d)
             for actor in json.loads(entry['actors']):
@@ -55,7 +49,8 @@ def import_filmezz_eu():
             for category in json.loads(entry['categories']):
                 c, created = Category.objects.get_or_create(name=category)
                 m.categories.add(c)
-        except Exception:
+        except Exception as e:
+            print("Error: {} for {}".format(str(e), entry['name']))
             try:
                 m.delete()
             except Exception:
