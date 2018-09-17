@@ -49,12 +49,19 @@ class MovieList(ListView):
 
         query_filter = []
         if search:
+            accentable_chars = 'aeiouáéíöóőüúű'
+            accented_char = "(?:(?![×Þß÷þø])[-'0-9a-zÀ-ÿ])"
+
+            for char in search:
+                if char in accentable_chars:
+                    search = search.replace(char, accented_char)
+
             if search_by == 'title':
-                query_filter.append(Q(title__icontains=search))
+                query_filter.append(Q(title__iregex=search))
             elif search_by == 'actors':
-                query_filter.append(Q(actors__name__icontains=search))
+                query_filter.append(Q(actors__name__iregex=search))
             elif search_by == 'directors':
-                query_filter.append(Q(directors__name__icontains=search))
+                query_filter.append(Q(directors__name__iregex=search))
 
         if category and category != 'all':
             query_filter.append(Q(categories__name__icontains=category))
