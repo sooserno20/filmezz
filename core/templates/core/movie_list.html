@@ -4,7 +4,11 @@
 
 {% block content %}
     <div class="page-header">
-        <h1>Filmek</h1>
+        {% if root_page %}
+            <h1>Legnézettebb filmek</h1>
+        {% else %}
+            <h1>Filmek</h1>
+        {% endif %}
     </div>
     <div class="row">
         {% for movie in movie_list %}

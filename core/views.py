@@ -1,11 +1,10 @@
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
-from django.db.models import Q
+from django.db.models import Q, F
 from .models import Movie, Category, MovieLink
 import unicodedata
 import random
-import requests
 
 
 def strip_accents(s):
@@ -35,14 +34,18 @@ class MovieList(ListView):
         data['custom_page_range'] = range(begin, end)
         data['get_string'] = '&'.join(['{}={}'.format(key, value) for
                                        (key, value) in self.request.GET.items() if key != 'page'])
+        data['root_page'] = self.request.GET == {}
         return data
 
     def get_queryset(self):
-        id = self.request.GET.get('id', None)
-        search_by = self.request.GET.get('search_by', None)
-        search = self.request.GET.get('search', None)
-        category = self.request.GET.get('category', None)
-        type = self.request.GET.get('type', None)
+        if not self.request.GET:
+            return self.model.objects.order_by('-watch_nr')[:12]
+
+        id = self.request.GET.get('id')
+        search_by = self.request.GET.get('search_by')
+        search = self.request.GET.get('search')
+        category = self.request.GET.get('category')
+        type = self.request.GET.get('type')
 
         if id:
             return Movie.objects.filter(id=id)
@@ -77,6 +80,12 @@ class MovieList(ListView):
 
 class MovieDetail(DetailView):
     model = Movie
+
+    def get(self, request, *args, **kwargs):
+        response = super(MovieDetail, self).get(self, request, *args, **kwargs)
+        self.object.watch_nr = F('watch_nr') + 1
+        self.object.save()
+        return response
 
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)

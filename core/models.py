@@ -3,13 +3,14 @@ from django.db import models
 
 
 class Movie(models.Model):
-    title = models.CharField(max_length=100)
+    title = models.CharField(max_length=100, db_index=True)
     description = models.TextField()
     # image = CloudinaryField('image', null=True, blank=True)
     image_url = models.URLField(blank=True, null=True)
     is_series = models.BooleanField(default=False)
     imdb_score = models.FloatField(default=0)
     year = models.CharField(null=True, blank=True, max_length=7)
+    watch_nr = models.PositiveIntegerField(default=0, db_index=True)
 
     class Meta:
         ordering = ['title']
