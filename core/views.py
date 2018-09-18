@@ -52,12 +52,13 @@ class MovieList(ListView):
 
         query_filter = []
         if search:
-            accentable_chars = 'aeiouáéíöóőüúű'
-            accented_char = "(?:(?![×Þß÷þø])[-'0-9a-zÀ-ÿ])"
+            HUNGARIAN_CHAR_MAP_MATCH = {'a': 'aá', 'á': 'aá', 'e': 'eé', 'é': 'eé', 'i': 'ií', 'í': 'ií', 'o': 'oöóő',
+                                        'ö': 'oöóő', 'ó': 'oöóő', 'ő': 'oöóő', 'u': 'uüúű', 'ü': 'uüúű', 'ú': 'uüúű',
+                                        'ű': 'uüúű'}
 
             for char in search:
-                if char in accentable_chars:
-                    search = search.replace(char, accented_char)
+                if char in HUNGARIAN_CHAR_MAP_MATCH:
+                    search = search.replace(char, '[{}]'.format(HUNGARIAN_CHAR_MAP_MATCH[char]))
 
             if search_by == 'title':
                 query_filter.append(Q(title__iregex=search))
