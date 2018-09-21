@@ -21,14 +21,22 @@
         <div class="col-lg-9 col-md-8 col-sm-6 col-xs-12">
             <span>{{ movie.description }}</span>
             <br>
-            <br>
-            <strong>IMDB score: </strong>{{ movie.imdb_score }}
-            <br>
-            <strong>Category: </strong>{{ movie.categories.all | join:", " }}
-            <br>
-            <strong>Directors: </strong>{{ movie.directors.all | join:", " }}
-            <br>
-            <strong>Actors: </strong>{{ movie.actors.all | join:", " }}
+            {% if movie.imdb_score %}
+                <br>
+                <strong>IMDB score: </strong>{{ movie.imdb_score }}
+            {% endif %}
+            {% if movie.categories.all %}
+                <br>
+                <strong>Category: </strong>{{ movie.categories.all | join:", " }}
+            {% endif %}
+            {% if movie.directors.all %}
+                <br>
+                <strong>Directors: </strong>{{ movie.directors.all | join:", " }}
+            {% endif %}
+            {% if movie.actors %}
+                <br>
+                <strong>Actors: </strong>{{ movie.actors.all | join:", " }}
+            {% endif %}
         </div>
     </div>
 
