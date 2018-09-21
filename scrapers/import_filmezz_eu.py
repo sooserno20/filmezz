@@ -1,4 +1,5 @@
 import os
+from datetime import datetime
 from os.path import abspath, dirname
 
 import django
@@ -19,7 +20,7 @@ from core.models import Movie, Director, Actor, Category
 def import_filmezz_eu():
     with open(sys.argv[1]) as data:
         json_data = json.loads(data.read())
-    for entry in json_data[:50]:
+    for entry in json_data:
         try:
             entry['name'] = entry['name'].strip()
             if entry['name'][-1] == ')' and entry['name'][-6] == '(':
@@ -28,9 +29,13 @@ def import_filmezz_eu():
             else:
                 name = entry['name']
                 year = ''
+            try:
+                imdb_score = float(entry['imdb_score'])
+            except:
+                imdb_score = 0
             if entry['is_series']:
-                m, created = Movie.objects.get_or_create(title=name, description=entry['description'],
-                                                         image_url=entry['image_path'], year=year)
+                m, created = Movie.objects.get_or_create(title=name, description=entry['description'], year=year,
+                                                         image_url=entry['image_path'], imdb_score=imdb_score)
                 for episode, links in json.loads(entry['links']).items():
                     episode_nr = episode.split('.')[0]
                     for host, link in links.items():
@@ -38,7 +43,7 @@ def import_filmezz_eu():
             else:
                 m, created = Movie.objects.get_or_create(title=name, description=entry['description'],
                                                          image_url=entry['image_path'],
-                                                         imdb_score=float(entry['imdb_score']), year=year)
+                                                         imdb_score=imdb_score, year=year)
                 for host, link in json.loads(entry['links']).items():
                     m.links.get_or_create(host=host, language=link[0][1], link=link[0][0])
             d, created = Director.objects.get_or_create(name=entry['director'])
@@ -58,4 +63,8 @@ def import_filmezz_eu():
 
 
 if __name__ == '__main__':
+    t1 = datetime.now()
     import_filmezz_eu()
+    t2 = datetime.now()
+    total = t2 - t1
+    print("Import finished in: %s" % total)
