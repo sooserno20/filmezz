@@ -9,3 +9,8 @@
 body {
     background-color: #F0F0F0;
 }
+
+.cover {
+    width: 200px;
+    height: 280px;
+}

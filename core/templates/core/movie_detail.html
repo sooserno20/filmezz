@@ -64,8 +64,9 @@
                                     {{ link.episode_nr }}
                                 {% endif %}
                             {% endwith %}
+                            {{ link.language | default:'&nbsp;'}}
                         {% else %}
-                            &nbsp;
+                            {{ link.language | default:'&nbsp;'}}
                         {% endif %}
                     </td>
 {#                Hibas link oszlop #}
