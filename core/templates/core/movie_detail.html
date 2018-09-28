@@ -1,63 +1,91 @@
 {% extends "core/base.html" %}
 {% load static %}
 {% load cloudinary %}
+{% load is_number %}
 
 {% block content %}
-    <div class="container">
-        <div class="page-header">
-            <h1>Movie details</h1>
-            <a href="{% url 'movie-list' %}">Movie list</a>
-        </div>
+    <div class="page-header">
+        <h1>{{ movie.title }}</h1>
+        <a href="{% url 'movie-list' %}">Vissza a filmekhez</a>
+    </div>
 
-        <div class="row">
-            <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
-                {% if movie.image_url %}
+    <div class="row">
+        <div class="col-lg-3 col-md-4 col-sm-6 col-xs-12">
+            {% if movie.image_url %}
 {#                    {% cloudinary movie.image width=260 height=390 crop="fill" %}#}
-                    <img class="cover" src="{{ movie.image_url }}"/>
-                {% else %}
-                    <img class="cover" src="{% static "images/_movie_image_default.jpg" %}"/>
-                {% endif %}
-            </div>
-            <div class="col-lg-9 col-md-8 col-sm-6 col-xs-12">
-                <span>{{ movie.description }}</span>
-            </div>
+                <img class="cover" src="{{ movie.image_url }}"/>
+            {% else %}
+                <img class="cover" src="{% static "images/_movie_image_default.jpg" %}"/>
+            {% endif %}
         </div>
+        <div class="col-lg-9 col-md-8 col-sm-6 col-xs-12">
+            <span>{{ movie.description }}</span>
+            <br>
+            {% if movie.imdb_score %}
+                <br>
+                <strong>IMDB score: </strong>{{ movie.imdb_score }}
+            {% endif %}
+            {% if movie.categories.all %}
+                <br>
+                <strong>Category: </strong>{{ movie.categories.all | join:", " }}
+            {% endif %}
+            {% if movie.directors.all %}
+                <br>
+                <strong>Directors: </strong>{{ movie.directors.all | join:", " }}
+            {% endif %}
+            {% if movie.actors %}
+                <br>
+                <strong>Actors: </strong>{{ movie.actors.all | join:", " }}
+            {% endif %}
+        </div>
+    </div>
 
-        {% if movie.links.all %}
-            <section class="content-box">
-                <h2 class="headline"><span>Links to movies</span></h2>
-                <ul class="list-unstyled table-horizontal url-list">
-
-                    <li class="head">
-                        <div class="col-sm-4 col-xs-4">Host</div>
-                        <div class="col-sm-4 col-xs-4">Info</div>
-                        <div class="col-sm-2 col-xs-2">Hibás link</div>
-                        <div class="col-sm-2 col-xs-2">Play</div>
-                    </li>
-                    {% for link in movie.links.all %}
-                        <li>
-                            <div class="col-sm-4 col-xs-4 host">
-                                Hardcoded
-                            </div>
-                            <div class="col-sm-4 col-xs-4">
-                                {% if link.episode_nr %}
+    {% if movie.links.all %}
+        <section class="content-box">
+            <h2 class="headline">
+                Linkek a filmekhez
+            </h2>
+            <table class="table table-hover">
+                <tr>
+                    <th class="col-lg-4 col-md-4 col-sm-4 col-xs-12">Host</th>
+                    <th class="col-lg-4 col-md-4 col-sm-4 col-xs-12">Info</th>
+{#                    <th>Hibás link</th>#}
+                    <th class="col-lg-4 col-md-4 col-sm-4 col-xs-12">Play</th>
+                </tr>
+                {% for link in movie.links.all %}
+                <tr>
+                    <td>{{ link.host }}</td>
+                    <td>
+                        {% if link.episode_nr %}
+                            {% with episode_is_number=link.episode_nr|is_number %}
+                                {% if episode_is_number %}
                                     {{ link.episode_nr }}. episode
                                 {% else %}
-                                    &nbsp;
+                                    {{ link.episode_nr }}
                                 {% endif %}
-                            </div>
-                            <div class="col-sm-2 col-xs-2">
-                                &nbsp;
-                            </div>
-                            <div class="col-sm-2 col-xs-2">
-                                <a href="{{ link }}">{{ link }}</a>
-                            </div>
-                        </li>
-                    {% endfor %}
-                </ul>
-            </section>
-        {% else %}
-            <h2 class="headline"><span>No links</span></h2>
+                            {% endwith %}
+                            {{ link.language | default:'&nbsp;'}}
+                        {% else %}
+                            {{ link.language | default:'&nbsp;'}}
+                        {% endif %}
+                    </td>
+{#                Hibas link oszlop #}
+{#                    <td>#}
+{#                        <a href="#" style="color: red;">#}
+{#                            <span class="glyphicon glyphicon-ban-circle"></span>#}
+{#                        </a>#}
+{#                    </td>#}
+                    <td>
+                        <a href="{% url 'movie-link' movie.id link.id %}" target="_blank">
+                            <span class="glyphicon glyphicon-film">{{ link | slice:":20" }}</span>
+
+                        </a>
+                    </td>
+                </tr>
+                {% endfor %}
+            </table>
+        </section>
+    {% else %}
+        <h2 class="headline"><span>No links</span></h2>
         {% endif %}
-    </div>
 {% endblock %}

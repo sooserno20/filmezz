@@ -3,81 +3,78 @@
 {% load cloudinary %}
 
 {% block content %}
-    <div class="container">
-        <div class="page-header">
-            <h1>List films</h1>
-        </div>
-        <form method="GET" action="">
-            <input type="text" value="{{ request.GET.search }}" name='search'
-                   placeholder="Search in titles, description">
-            <select name="search_by">
-                <option value="title" selected>By title</option>
-                <option value="actors">By actor</option>
-                <option value="directors">By director</option>
-            </select>
-            <button type="submit" value="Search">
-                <span class="glyphicon glyphicon-search"></span>
-            </button>
-        </form>
-
-        <div id="extended_search">
-            <div class="row">
-                <div class="col-lg-3 col-xs-6">
-                    Category
-                </div>
-                <div class="col-lg-3 col-xs-6">
-                    <select name="category">
-                        <option value='All' selected>All</option>
-                        {% for option in category_options %}
-                            <option value={{ option }}>{{ option }}</option>
-                        {% endfor %}
-                    </select>
-                </div>
-                <div class="col-lg-3 col-xs-6">
-                    Type
-                </div>
-                <div class="col-lg-3 col-xs-6">
-                    <select name="type">
-                        <option value='All' selected>All</option>
-                        <option value='movie'>Only movies</option>
-                        <option value='series'>Only series</option>
-                    </select>
-                </div>
-
-            </div>
-        </div>
-
-        <ul class="row list-unstyled">
-            {% for movie in movie_list %}
+    <div class="page-header">
+        {% if root_page %}
+            <h1>Legnézettebb filmek</h1>
+        {% else %}
+            <h1>Filmek</h1>
+        {% endif %}
+    </div>
+    <div class="row">
+        {% for movie in movie_list %}
+            <div class="col-lg-3 col-md-3 col-sm-4 text-center" style="padding-top: 10px; padding-bottom: 10px; ">
                 <a href="{% url 'movie-detail' movie.id %}">
-                    <li class="col-md-2 col-sm-3 col-xs-6">
-                        {{ movie.title | slice:":20" }}
-                        {% if movie.image_url %}
-                            {#                            {% cloudinary movie.image width=165 height=245 crop="fill" %}#}
-                            <img class="cover" src="{{ movie.image_url }}"/>
-                        {% else %}
-                            <img class="cover" src="{% static "images/_movie_image_default.jpg" %}"/>
-                        {% endif %}
-                    </li>
+                    {% if movie.image_url %}
+                        {# {% cloudinary movie.image width=165 height=245 crop="fill" %} #}
+                        <img class="cover" src="{{ movie.image_url }}"/>
+                    {% else %}
+                        <img class="cover" src="{% static "images/_movie_image_default.jpg" %}"/>
+                    {% endif %}
                 </a>
-            {% endfor %}
+                <h5 style="padding-top: 10px; height: 50px">
+                    <a href="{% url 'movie-detail' movie.id %}">
+                        {{ movie.title }}
+                    </a>
+                </h5>
+            </div>
+        {% endfor %}
+    </div>
+        <ul class="row list-unstyled">
         </ul>
 
         {% if is_paginated %}
             <div class="text-center">
                 <ul class="pagination">
                     {% if page_obj.has_previous %}
-                        <li><a href="?page={{ page_obj.previous_page_number }}">&laquo;</a></li>
+                        <li><a href="?page={{ page_obj.previous_page_number }}&{{ get_string }}">&laquo;</a></li>
                     {% else %}
-                        <li class=""><span>&laquo;</span></li>
+                        <li><span>&laquo;</span></li>
                     {% endif %}
-                    {% for i in paginator.page_range %}
+
+                    {% if 1 != page_obj.number %}
+                        <li><a href="?page=1&{{ get_string }}">1</a></li>
+                    {% else %}
+                        <li class="active"><span>1</span></li>
+                    {% endif %}
+
+{#                    {% if page_obj.number == 5 %}#}
+{#                        <li><a href="?page=2">2</a></li>#}
+{#                    {% endif %}#}
+                    {% if page_obj.number >= 5 %}
+                        <li><span>...</span></li>
+                    {% endif %}
+
+                    {% for i in custom_page_range %}
                         {% if page_obj.number == i %}
-                            <li class="active"><span>{{ i }}</span></li>
+                            <li class="active"><span>{{ page_obj.number }}</span></li>
                         {% else %}
-                            <li><a href="?page={{ i }}">{{ i }}</a></li>
+                            <li><a href="?page={{ i }}&{{ get_string }}">{{ i }}</a></li>
                         {% endif %}
                     {% endfor %}
+
+{#                    {% if page_obj.number == end_minus_five %}#}
+{#                        <li><a href="?page={{ before_last_page }}">{{ before_last_page }}</a></li>#}
+{#                    {% endif %}#}
+                    {% if page_obj.number <= end_minus_five %}
+                        <li><span>...</span></li>
+                    {% endif %}
+
+                    {% if last_page != page_obj.number %}
+                        <li><a href="?page={{ last_page }}&{{ get_string }}">{{ last_page }}</a></li>
+                    {% else %}
+                        <li class="active"><span>{{ last_page }}</span></li>
+                    {% endif %}
+
                     {% if page_obj.has_next %}
                         <li><a href="?page={{ page_obj.next_page_number }}">&raquo;</a></li>
                     {% else %}
