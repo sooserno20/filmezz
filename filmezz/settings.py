@@ -137,10 +137,16 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, "static"),
 ]
 
+# CLOUDINARY = {
+#   'cloud_name': 'heo3hfgtw',
+#   'api_key': '549734456738837',
+#   'api_secret': 'NdVMYoTN3bb3cQHfAVOCdgGYksk',
+# }
+
 CLOUDINARY = {
-  'cloud_name': 'heo3hfgtw',
-  'api_key': '549734456738837',
-  'api_secret': 'NdVMYoTN3bb3cQHfAVOCdgGYksk',
+  'cloud_name': 'hjf7creco',
+  'api_key': '383527229964111',
+  'api_secret': '8qkdzhrghJl7CvVXUClF2AkvWzE',
 }
 
 django_heroku.settings(locals())

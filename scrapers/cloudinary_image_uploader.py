@@ -5,30 +5,39 @@ from os.path import abspath, dirname
 import django
 import sys
 
+import requests
+
 project_path = dirname(dirname(abspath(__file__)))
 sys.path.append(project_path)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'filmezz.settings'
 django.setup()
 
-import sys
 from cloudinary.uploader import upload
 
 from core.models import Movie
 
 
 def upload_images():
-    directory = sys.argv[1]
-    print('Directory: ' + directory)
-    for image in os.listdir(directory):
+    count = 0
+    for movie in Movie.objects.all():
         try:
-            # TODO: Download images and upload directly to cloudinary
-            m = Movie.objects.filter(image_url__endswith=image).first()
-            if not m:
-                print('Image for movie not found {}'.format(image))
+            if movie.image_url.find('cloudinary') != -1:
                 continue
-            response = upload(os.path.join(directory, image), public_id='images/' + image.split('.')[0])
-            m.image_url = response['url']
-            m.save()
+            response = requests.get(movie.image_url)
+            file_name = movie.image_url.split('/')[-1]
+            if response.status_code == 200:
+                with open(file_name, 'wb') as f:
+                    f.write(response.content)
+            else:
+                print('Name: {}, status: {}'.format(movie.title, response.status_code))
+
+            response = upload(file_name, public_id='movie_images/' + file_name.split('.')[0])
+            movie.image_url = response['url']
+            movie.save()
+            os.remove(file_name)
+            count += 1
+            if count % 300 == 0:
+                print('{} movies processed'.format(count))
         except Exception as e:
             print('Exc {}'.format(str(e)))
             try:
