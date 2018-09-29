@@ -1,7 +1,7 @@
 import os
 from datetime import datetime
 from os.path import abspath, dirname
-
+import unicodedata
 import django
 import sys
 
@@ -19,31 +19,45 @@ from core.models import Movie
 
 def upload_images():
     count = 0
+    count_already_processed = 0
     for movie in Movie.objects.all():
         try:
+            if not movie.image_url:
+                continue
             if movie.image_url.find('cloudinary') != -1:
+                count_already_processed += 1
+                if count_already_processed % 300 == 0:
+                    print('{} movies already processed'.format(count_already_processed))
                 continue
             response = requests.get(movie.image_url)
             file_name = movie.image_url.split('/')[-1]
+            # normalize accented characters
+            file_name = unicodedata.normalize('NFKD', file_name).encode('ASCII', 'ignore').decode('ASCII')
             if response.status_code == 200:
                 with open(file_name, 'wb') as f:
                     f.write(response.content)
+            elif response.status_code == 404:
+                movie.image_url = None
+                movie.save()
+                continue
             else:
                 print('Name: {}, status: {}'.format(movie.title, response.status_code))
+                continue
 
             response = upload(file_name, public_id='movie_images/' + file_name.split('.')[0])
             movie.image_url = response['url']
-            movie.save()
             os.remove(file_name)
+            movie.save()
             count += 1
             if count % 300 == 0:
                 print('{} movies processed'.format(count))
         except Exception as e:
             print('Exc {}'.format(str(e)))
             try:
-                print('Error for {} with exc {}'.format(m, str(e)))
+                print('Error for {} with exc {}'.format(movie.title, str(e)))
             except NameError:
                 pass
+        print('{} movies processed'.format(count))
 
 
 if __name__ == '__main__':
