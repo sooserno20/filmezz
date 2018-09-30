@@ -1,5 +1,6 @@
 import ctypes
 import json
+import os
 from datetime import datetime
 from sys import exit
 from requests.exceptions import Timeout
@@ -16,12 +17,12 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) '
 RETRY_FILE = open('retry.txt', 'a+', encoding='utf-8')
 ERR_FILE = open('errors.txt', 'a+', encoding='utf-8')
 t1 = datetime.now()
-is_estimated_time_calulated = Value(ctypes.c_bool, False)
+is_estimated_time_calculated = Value(ctypes.c_bool, False)
 lock = Lock()
 
 
 def scrape_part(page):
-    global is_estimated_time_calulated
+    global is_estimated_time_calculated
     result = {}
     response = requests.get('{}{}'.format(MOVIES_URL, page, headers=HEADERS, timeout=10))
     if response.status_code == 200:
@@ -79,23 +80,20 @@ def scrape_part(page):
                         # third time continous timeout, seems that the site isn't up, so exit
                         print('Site is down, exiting..')
                         exit()
-                lock.acquire()
-                RETRY_FILE.write('{}\n'.format(page))
-                RETRY_FILE.flush()
-                ERR_FILE.write('Link {} not processed with exc {}\n'.format(link, str(e)))
-                ERR_FILE.flush()
-                lock.release()
+                with lock:
+                    RETRY_FILE.write('{}\n'.format(page))
+                    RETRY_FILE.flush()
+                    ERR_FILE.write('Link {} not processed with exc {}\n'.format(link, str(e)))
+                    ERR_FILE.flush()
 
-        if not is_estimated_time_calulated.value:
-            # TODO: this still prints in each process
-            lock.acquire()
-            if not is_estimated_time_calulated.value:
-                is_estimated_time_calulated.value = True
+        if not is_estimated_time_calculated.value:
+            # TODO: on fucking windows the lock mechanism doesn't work
+            with lock:
+                is_estimated_time_calculated.value = True
                 t2 = datetime.now()
                 time_taken = t2 - t1
                 est_time = time_taken * (calculate_last_page() - cpu_count()) / cpu_count()
                 print('Time estimated: {}'.format(est_time))
-            lock.release()
 
         return result
 
@@ -128,18 +126,19 @@ def calculate_last_page():
 
 
 if __name__ == "__main__":
-    # if lock works decomment
     # if exists('retry.txt'):
     #     with open('retry.txt', 'r', encoding='utf-8') as retry_file:
+    #         pages = set()
     #         for page in retry_file:
+    #             pages.add(page)
+    #         for page in pages:
     #             # TODO: rewrite to work on specific links, not on whole pages
     #             scraped_data = scrape_part(page)
     #             # TODO: solve appending to file
     #     # only retry the links that weren't scraped
+    #     os.remove('retry.txt')
     #     exit()
 
-    RETRY_FILE.write('\n' + str(datetime.now()))
-    ERR_FILE.write('\n' + str(datetime.now()))
     data = scrape()
     if data:
         with open('hubmovie_cc.json', 'a+', encoding='utf-8') as f:
