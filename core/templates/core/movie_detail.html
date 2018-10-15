@@ -6,6 +6,11 @@
 {% block content %}
     <div class="page-header">
         <h1>{{ movie.title }}</h1>
+        {% if movie.translations.all %}
+            {% for transl in movie.translations.all %}
+                <h3>{{ transl.title }}</h3>
+            {% endfor %}
+        {% endif %}
         <a href="{% url 'movie-list' %}">Vissza a filmekhez</a>
     </div>
 

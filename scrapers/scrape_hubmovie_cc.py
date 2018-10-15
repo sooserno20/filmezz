@@ -102,7 +102,7 @@ def scrape_part(page):
 
 
 def scrape():
-    pool_size = cpu_count() * 2
+    pool_size = cpu_count() * 8
     pages = list(range(1, calculate_last_page()))
     pool = Pool(pool_size)
     # for debugging comment out this
@@ -141,7 +141,7 @@ if __name__ == "__main__":
 
     data = scrape()
     if data:
-        with open('hubmovie_cc.json', 'a+', encoding='utf-8') as f:
+        with open('hubmovie_cc1.json', 'a+', encoding='utf-8') as f:
             f.write('[\n')
             for entry in data:
                 json.dump(entry, f)

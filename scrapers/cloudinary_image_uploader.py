@@ -16,6 +16,8 @@ from cloudinary.uploader import upload
 
 from core.models import Movie
 
+MAPPING_FILE = open('movie_image_mappings.txt', 'a+', encoding='utf-8')
+
 
 def upload_images():
     count = 0
@@ -45,11 +47,12 @@ def upload_images():
                 continue
 
             response = upload(file_name, public_id='movie_images/' + file_name.split('.')[0])
+            MAPPING_FILE.write('{},{}\n'.format(movie.image_url, response['url']))
             movie.image_url = response['url']
             os.remove(file_name)
             movie.save()
             count += 1
-            if count % 300 == 0:
+            if count % 100 == 0:
                 print('{} movies processed'.format(count))
         except Exception as e:
             print('Exc {}'.format(str(e)))
@@ -57,7 +60,6 @@ def upload_images():
                 print('Error for {} with exc {}'.format(movie.title, str(e)))
             except NameError:
                 pass
-        print('{} movies processed'.format(count))
 
 
 if __name__ == '__main__':
@@ -66,3 +68,4 @@ if __name__ == '__main__':
     t2 = datetime.now()
     total = t2 - t1
     print("Upload finished in: %s" % total)
+    MAPPING_FILE.close()

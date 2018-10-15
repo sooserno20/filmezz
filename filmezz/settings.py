@@ -143,10 +143,16 @@ STATICFILES_DIRS = [
 #   'api_secret': 'NdVMYoTN3bb3cQHfAVOCdgGYksk',
 # }
 
+# CLOUDINARY = {
+#   'cloud_name': 'hjf7creco',
+#   'api_key': '383527229964111',
+#   'api_secret': '8qkdzhrghJl7CvVXUClF2AkvWzE',
+# }
+
 CLOUDINARY = {
-  'cloud_name': 'hjf7creco',
-  'api_key': '383527229964111',
-  'api_secret': '8qkdzhrghJl7CvVXUClF2AkvWzE',
+  'cloud_name': 'sooserno86',
+  'api_key': '881796655951165',
+  'api_secret': 'kl_9n_kwMXNwycbJlAfnqhaNeF4',
 }
 
 django_heroku.settings(locals())

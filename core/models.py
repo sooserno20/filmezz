@@ -19,6 +19,12 @@ class Movie(models.Model):
         return self.title
 
 
+class MovieTranslation(models.Model):
+    movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='translations')
+    title = models.CharField(max_length=100, db_index=True)
+    language = models.CharField(null=True, blank=True, max_length=20)
+
+
 class MovieLink(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='links')
     host = models.CharField(null=True, blank=True, max_length=20)
@@ -36,7 +42,7 @@ class MovieLink(models.Model):
 
 class Category(models.Model):
     movies = models.ManyToManyField(Movie, related_name='categories')
-    name = models.CharField(max_length=15)
+    name = models.CharField(max_length=15, db_index=True)
 
     class Meta:
         ordering = ['name']
@@ -47,7 +53,7 @@ class Category(models.Model):
 
 class Actor(models.Model):
     movies = models.ManyToManyField(Movie, related_name='actors')
-    name = models.CharField(max_length=70)
+    name = models.CharField(max_length=70, db_index=True)
 
     class Meta:
         ordering = ['name']
@@ -58,7 +64,7 @@ class Actor(models.Model):
 
 class Director(models.Model):
     movies = models.ManyToManyField(Movie, related_name='directors')
-    name = models.CharField(max_length=70)
+    name = models.CharField(max_length=70, db_index=True)
 
     class Meta:
         ordering = ['name']

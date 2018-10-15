@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Movie, MovieLink, Actor, Category, Director
+from .models import Movie, MovieLink, Actor, Category, Director, MovieTranslation
 
 
 class MovieLinkInline(admin.StackedInline):
@@ -16,6 +16,10 @@ class DirectorInline(admin.StackedInline):
 
 class CategoryInline(admin.StackedInline):
     model = Category
+
+
+class TranslationInline(admin.StackedInline):
+    model = MovieTranslation
 
 
 class MovieAdmin(admin.ModelAdmin):
@@ -37,7 +41,8 @@ class MovieAdmin(admin.ModelAdmin):
     get_categories.short_description = 'Categories'
     get_directors.short_description = 'Directors'
 
-    inlines = (MovieLinkInline,)
+    inlines = (MovieLinkInline, TranslationInline)
+
 
 admin.site.register(Movie, MovieAdmin)
 admin.site.register(Actor)
