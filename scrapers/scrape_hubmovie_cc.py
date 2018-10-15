@@ -126,18 +126,32 @@ def calculate_last_page():
 
 
 if __name__ == "__main__":
-    # if exists('retry.txt'):
-    #     with open('retry.txt', 'r', encoding='utf-8') as retry_file:
-    #         pages = set()
-    #         for page in retry_file:
-    #             pages.add(page)
-    #         for page in pages:
-    #             # TODO: rewrite to work on specific links, not on whole pages
-    #             scraped_data = scrape_part(page)
-    #             # TODO: solve appending to file
-    #     # only retry the links that weren't scraped
-    #     os.remove('retry.txt')
-    #     exit()
+    if exists('retry.txt'):
+        with open('retry.txt', 'r', encoding='utf-8') as retry_file:
+            pages = set()
+            for page in retry_file:
+                try:
+                    pages.add(int(page))
+                except ValueError:
+                    pass
+        # delete last character ,]
+        with open('hubmovie_cc.json', 'rb+') as retry_file:
+            retry_file.seek(-2, os.SEEK_END)
+            retry_file.truncate()
+        with open('hubmovie_cc.json', 'a+', encoding='utf-8') as f:
+            f.write(',\n')
+        pages = list(pages)
+        with open('hubmovie_cc.json', 'a+', encoding='utf-8') as f:
+            for page in pages:
+                # TODO: rewrite to work on specific links, not on whole pages
+                scraped_data = scrape_part(int(page))
+                json.dump(scraped_data, f)
+                if page != pages[-1]:
+                    f.write(',')
+                f.write('\n')
+            f.write(']')
+        os.remove('retry.txt')
+        exit()
 
     data = scrape()
     if data:
