@@ -8,6 +8,9 @@
             <h1>Legnézettebb filmek</h1>
         {% else %}
             <h1>Filmek</h1>
+            {% if not movie_list %}
+                <h4 class="margin-left-10">No movies found</h4>
+            {% endif %}
         {% endif %}
     </div>
     <div class="row">

@@ -25,7 +25,7 @@ class TranslationInline(admin.StackedInline):
 class MovieAdmin(admin.ModelAdmin):
     list_display = ('title', 'description', 'image_url', 'is_series', 'imdb_score',
                     'get_categories', 'get_actors', 'get_directors')
-    search_fields = ('title', 'description', 'image_url', 'is_series', 'imdb_score')
+    search_fields = ('title', 'image_url', 'is_series', 'imdb_score')
 
     def get_actors(self, obj=None):
         obj = obj or self

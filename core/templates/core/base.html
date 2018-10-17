@@ -29,7 +29,7 @@
     {% block header %}
         <nav class="navbar navbar-default">
             <div class="container-fluid">
-                <div class="navbar-header margin-top-17">
+                <div class="navbar-header">
                     <a href="{% url 'movie-list' %}">
                         <img src="{% static 'images/logo.png' %}" width="150"/>
                     </a>
@@ -40,94 +40,116 @@
                         <form method="GET" action="{% url 'movie-list' %}" class="form-inline">
                             <div class="form-group">
                                 <input type="text" value="{{ request.GET.search }}" name='search'
-                                       placeholder="Search in titles, description" class="form-control">
+                                       placeholder="Search term" class="form-control">
 
                             </div>
                             <div class="form-group">
                                 <select name="search_by" class="form-control">
                                     {# TODO: refactor if, make a template or filter or cookies in views? #}
-                                    <option value="title" {% if request.GET.search_by == 'title' %}selected {% endif %}>Cím szerint</option>
-                                    <option value="actors" {% if request.GET.search_by == 'actors' %}selected {% endif %}>Színész szerint</option>
-                                    <option value="directors" {% if request.GET.search_by == 'directors' %}selected {% endif %}>Rendező szerint</option>
+                                    <option value="title" {% if request.GET.search_by == 'title' %}selected {% endif %}>by title</option>
+                                    <option value="actors" {% if request.GET.search_by == 'actors' %}selected {% endif %}>by actor</option>
+                                    <option value="directors" {% if request.GET.search_by == 'directors' %}selected {% endif %}>by director</option>
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="category">Kategória</label>
+                                <label for="category">Category</label>
                                 <select name="category" class="form-control" id="category">
-                                    <option value='all' selected>Összes</option>
+                                    <option value='all' selected>All</option>
                                     {% for option in category_options %}
                                         <option value={{ option }} {% if request.GET.category == option %}selected {% endif %}>{{ option }}</option>
                                     {% endfor %}
                                 </select>
                             </div>
                             <div class="form-group">
-                                <label for="type">Típus</label>
+                                <label for="type">Type</label>
                                 <select name="type" class="form-control" id="type">
-                                    <option value='all' {% if request.GET.type == 'all' %}selected {% endif %}>Összes</option>
-                                    <option value='movie' {% if request.GET.type == 'movie' %}selected {% endif %}>Csak filmek</option>
-                                    <option value='series' {% if request.GET.type == 'series' %}selected {% endif %}>Csak sorozatok</option>
+                                    <option value='all' {% if request.GET.type == 'all' %}selected {% endif %}>All</option>
+                                    <option value='movie' {% if request.GET.type == 'movie' %}selected {% endif %}>Only movies</option>
+                                    <option value='series' {% if request.GET.type == 'series' %}selected {% endif %}>Only series</option>
                                 </select>
                             </div>
-                            <button type="submit" value="Search" class="btn btn-default">
-                                <span class="glyphicon glyphicon-search"></span>&nbsp;Keresés
-                            </button>
-                        </form>
-                    </div>
-                </center>
-            </div>
-
-            <div class="container-fluid">
-                <center>
-                    <div class="margin-bottom-17">
-
-                        <form method="GET" action="{% url 'random-movie' %}" class="form-inline">
-                            <div class="form-group">
-                                <label for="category">Kategória</label>
-                                <select name="category" class="form-control" id="category">
-                                    <option value='all' selected>Összes</option>
-                                    {% for option in category_options %}
-                                        <option value={{ option }} {% if request.GET.category == option %}selected {% endif %}>{{ option }}</option>
-                                    {% endfor %}
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="type">Típus</label>
-                                <select name="type" class="form-control" id="type">
-                                    <option value='all' {% if request.GET.type == 'all' %}selected {% endif %}>Összes</option>
-                                    <option value='movie' {% if request.GET.type == 'movie' %}selected {% endif %}>Csak filmek</option>
-                                    <option value='series' {% if request.GET.type == 'series' %}selected {% endif %}>Csak sorozatok</option>
-                                </select>
-                            </div>
-                            <div class="form-group">
-                                <label for="imdb_score">Nagyobb mint</label>
-                                <select name="imdb_score" class="form-control" id="imdb_score">
+{#                            <div class="form-group">#}
+{#                                <label for="imdb_score">Imdb score</label>#}
+{#                                <select name="imdb_score" class="form-control" id="imdb_score">#}
                                     {# range in django template #}
-                                    {% for i in "x"|ljust:"10" %}
-                                        {% if request.GET.imdb_score %}
-                                            <option value="{{ forloop.counter0 }}"
-                                                    {% if request.GET.imdb_score == forloop.counter0|stringformat:"i" %}selected {% endif %}>
-                                                {{ forloop.counter0 }}
-                                            </option>
-                                        {% else %}
-                                            {% if forloop.counter0 == 5 %}
-                                                <option value="5" selected>5</option>
-                                            {% else %}
-                                                <option value="{{ forloop.counter0 }}">
-                                                    {{ forloop.counter0 }}
-                                                </option>
-                                            {% endif %}
-                                        {% endif %}
-                                    {% endfor %}
-                                </select>
-                                <label for="imdb_score">pont</label>
-                            </div>
+{#                                    {% for i in "x"|ljust:"10" %}#}
+{#                                        {% if request.GET.imdb_score %}#}
+{#                                            <option value="{{ forloop.counter0 }}"#}
+{#                                                    {% if request.GET.imdb_score == forloop.counter0|stringformat:"i" %}selected {% endif %}>#}
+{#                                                >{{ forloop.counter0 }}#}
+{#                                            </option>#}
+{#                                        {% else %}#}
+{#                                            {% if forloop.counter0 == 1 %}#}
+{#                                                <option value="1" selected>>1</option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ forloop.counter0 }}">#}
+{#                                                    >{{ forloop.counter0 }}#}
+{#                                                </option>#}
+{#                                            {% endif %}#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            </div>#}
                             <button type="submit" value="Search" class="btn btn-default">
-                                <span class="glyphicon glyphicon-random"></span>&nbsp;Random movie
+                                <span class="glyphicon glyphicon-search"></span>&nbsp;Search
                             </button>
                         </form>
                     </div>
                 </center>
             </div>
+
+{#            <div class="container-fluid">#}
+{#                <center>#}
+{#                    <div class="margin-bottom-17">#}
+{##}
+{#                        <form method="GET" action="{% url 'random-movie' %}" class="form-inline">#}
+{#                            <div class="form-group">#}
+{#                                <label for="category">Kategória</label>#}
+{#                                <select name="category" class="form-control" id="category">#}
+{#                                    <option value='all' selected>Összes</option>#}
+{#                                    {% for option in category_options %}#}
+{#                                        <option value={{ option }} {% if request.GET.category == option %}selected {% endif %}>{{ option }}</option>#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                            </div>#}
+{#                            <div class="form-group">#}
+{#                                <label for="type">Típus</label>#}
+{#                                <select name="type" class="form-control" id="type">#}
+{#                                    <option value='all' {% if request.GET.type == 'all' %}selected {% endif %}>Összes</option>#}
+{#                                    <option value='movie' {% if request.GET.type == 'movie' %}selected {% endif %}>Csak filmek</option>#}
+{#                                    <option value='series' {% if request.GET.type == 'series' %}selected {% endif %}>Csak sorozatok</option>#}
+{#                                </select>#}
+{#                            </div>#}
+{#                            <div class="form-group">#}
+{#                                <label for="imdb_score">Nagyobb mint</label>#}
+{#                                <select name="imdb_score" class="form-control" id="imdb_score">#}
+                                    {# range in django template #}
+{#                                    {% for i in "x"|ljust:"10" %}#}
+{#                                        {% if request.GET.imdb_score %}#}
+{#                                            <option value="{{ forloop.counter0 }}"#}
+{#                                                    {% if request.GET.imdb_score == forloop.counter0|stringformat:"i" %}selected {% endif %}>#}
+{#                                                >{{ forloop.counter0 }}#}
+{#                                            </option>#}
+{#                                        {% else %}#}
+{#                                            {% if forloop.counter0 == 1 %}#}
+{#                                                <option value="1" selected>>1</option>#}
+{#                                            {% else %}#}
+{#                                                <option value="{{ forloop.counter0 }}">#}
+{#                                                    >{{ forloop.counter0 }}#}
+{#                                                </option>#}
+{#                                            {% endif %}#}
+{#                                        {% endif %}#}
+{#                                    {% endfor %}#}
+{#                                </select>#}
+{#                                <label for="imdb_score">pont</label>#}
+{#                            </div>#}
+{#                            <button type="submit" value="Search" class="btn btn-default">#}
+{#                                <span class="glyphicon glyphicon-random"></span>&nbsp;Random movie#}
+{#                            </button>#}
+{#                        </form>#}
+{#                    </div>#}
+{#                </center>#}
+{#            </div>#}
 
         </nav>
     {% endblock %}

@@ -11,7 +11,7 @@
                 <h3>{{ transl.title }}</h3>
             {% endfor %}
         {% endif %}
-        <a href="{% url 'movie-list' %}">Vissza a filmekhez</a>
+        <a href="{% url 'movie-list' %}">Back to movie list</a>
     </div>
 
     <div class="row">
@@ -48,7 +48,7 @@
     {% if movie.links.all %}
         <section class="content-box">
             <h2 class="headline">
-                Linkek a filmekhez
+                Links
             </h2>
             <table class="table table-hover">
                 <tr>
