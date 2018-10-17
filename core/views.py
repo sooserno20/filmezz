@@ -1,3 +1,5 @@
+from urllib.parse import quote
+
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.views.generic import DetailView, ListView
@@ -32,7 +34,7 @@ class MovieList(ListView):
         begin = page_no - 2 if page_no > 3 else 2
         end = page_no + 3 if page_no < data['last_page'] - 2 else min(page_no + 2, data['last_page'])
         data['custom_page_range'] = range(begin, end)
-        data['get_string'] = '&'.join(['{}={}'.format(key, value) for
+        data['get_string'] = '&'.join(['{}={}'.format(key, quote(value)) for
                                        (key, value) in self.request.GET.items() if key != 'page'])
         data['root_page'] = self.request.GET == {}
         return data
