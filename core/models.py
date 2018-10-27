@@ -11,6 +11,7 @@ class Movie(models.Model):
     imdb_score = models.FloatField(default=0)
     year = models.CharField(null=True, blank=True, max_length=7)
     watch_nr = models.PositiveIntegerField(default=0, db_index=True)
+    duration = models.PositiveSmallIntegerField(null=True, blank=False)
 
     class Meta:
         ordering = ['title']
@@ -23,6 +24,9 @@ class MovieTranslation(models.Model):
     movie = models.ForeignKey(Movie, on_delete=models.CASCADE, related_name='translations')
     title = models.CharField(max_length=100, db_index=True)
     language = models.CharField(null=True, blank=True, max_length=20)
+
+    def __str__(self):
+        return '{}/{}'.format(self.title, self.language)
 
 
 class MovieLink(models.Model):

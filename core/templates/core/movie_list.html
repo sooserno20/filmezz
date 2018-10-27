@@ -5,9 +5,9 @@
 {% block content %}
     <div class="page-header">
         {% if root_page %}
-            <h1>Most watched movies</h1>
+            <legend><h1>Most watched movies</h1></legend>
         {% else %}
-            <h1>Movies</h1>
+            <legend><h1>Movies</h1></legend>
             {% if not movie_list %}
                 <h4 class="margin-left-10">No movies found</h4>
             {% endif %}
