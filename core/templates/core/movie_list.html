@@ -16,7 +16,7 @@
     <div class="row">
         {% for movie in movie_list %}
             <div class="col-lg-3 col-md-3 col-sm-4 text-center" style="padding-top: 10px; padding-bottom: 10px; ">
-                <a href="{% url 'movie-detail' movie.id %}">
+                <a href="{% url 'movie-detail' movie.id movie.slug %}">
                     {% if movie.image_url %}
                         {# {% cloudinary movie.image width=165 height=245 crop="fill" %} #}
                         <img class="cover" src="{{ movie.image_url }}"/>
@@ -25,7 +25,7 @@
                     {% endif %}
                 </a>
                 <h5 style="padding-top: 10px; height: 50px">
-                    <a href="{% url 'movie-detail' movie.id %}">
+                    <a href="{% url 'movie-detail' movie.id movie.slug %}">
                         {{ movie.title }}
                     </a>
                 </h5>

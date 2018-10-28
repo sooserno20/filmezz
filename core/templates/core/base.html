@@ -15,7 +15,9 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-COMPATIBLE" content="IE=edge">
     <meta name="viewport" content="width = device-width, initial-scale = 1">
-    <title>MOVIESITENAME</title>
+    {% block title %}
+        <title>e-movies</title>
+    {% endblock %}
     <link rel="stylesheet" type="text/css" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="{% static "css/main.css" %}">
     <script
@@ -158,7 +160,7 @@
     {% block footer %}
         <footer style="margin-top 50px;">
             <hr>
-            <center><p>© 2018 All rights reserved by MOVIESITENAME.</p></center>
+            <center><p>© 2018 All rights reserved by e-movies.eu.</p></center>
         </footer>
     {% endblock footer %}
 </div>

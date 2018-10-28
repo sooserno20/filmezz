@@ -21,8 +21,9 @@ import core.views
 
 urlpatterns = [
     url(r'^$', core.views.MovieList.as_view(), name='movie-list'),
-    url(r'^movie/(?P<pk>\d+)$', core.views.MovieDetail.as_view(), name='movie-detail'),
     url(r'^movie/(?P<movie_id>\d+)/(?P<link_id>\d+)$', core.views.movie_link, name='movie-link'),
+    url(r'^movie/(?P<pk>\d+)/(?P<slug>[-\w\d]+)$', core.views.MovieDetail.as_view(), name='movie-detail'),
+    # url(r'^movie/(?P<pk>\d+)$', core.views.MovieDetail.as_view(), name='movie-detail'),
     url(r'^random_movie/', core.views.suggest_random_movie, name='random-movie'),
     url(r'^admin/', admin.site.urls),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

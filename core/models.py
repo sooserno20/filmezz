@@ -1,5 +1,6 @@
 from cloudinary.models import CloudinaryField
 from django.db import models
+from django.utils.text import slugify
 
 
 class Movie(models.Model):
@@ -12,12 +13,19 @@ class Movie(models.Model):
     year = models.CharField(null=True, blank=True, max_length=7)
     watch_nr = models.PositiveIntegerField(default=0, db_index=True)
     duration = models.PositiveSmallIntegerField(null=True, blank=False)
+    slug = models.SlugField(null=True, blank=True)
 
     class Meta:
         ordering = ['title']
 
     def __str__(self):
         return self.title
+
+    def save(self, *args, **kwargs):
+        super().save(*args, **kwargs)
+        if not self.slug:
+            self.slug = slugify(self.title)
+            self.save()
 
 
 class MovieTranslation(models.Model):
