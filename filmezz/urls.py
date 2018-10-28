@@ -17,14 +17,21 @@ from django.conf import settings
 from django.conf.urls import url
 from django.conf.urls.static import static
 from django.contrib import admin
-from django.contrib.sitemaps import GenericSitemap
+from django.contrib.sitemaps import GenericSitemap, Sitemap
 from django.contrib.sitemaps.views import sitemap
 import core.views
 from core.models import Movie
 
-info_dict = {
-    'queryset': Movie.objects.all(),
-}
+
+class StaticViewSitemap(Sitemap):
+    priority = 1.0
+
+    def items(self):
+        return ['main', ]
+
+    def location(self, item):
+        return '/'
+
 
 urlpatterns = [
     url(r'^$', core.views.MovieList.as_view(), name='movie-list'),
@@ -33,6 +40,7 @@ urlpatterns = [
     # url(r'^movie/(?P<pk>\d+)$', core.views.MovieDetail.as_view(), name='movie-detail'),
     url(r'^random_movie/', core.views.suggest_random_movie, name='random-movie'),
     url(r'^admin/', admin.site.urls),
-    url(r'^sitemap\.xml$', sitemap, {'sitemaps': {'movies': GenericSitemap(info_dict, priority=0.7)}},
+    url(r'^sitemap\.xml$', sitemap, {'sitemaps': {'static': StaticViewSitemap,
+                                                  'movies': GenericSitemap({'queryset': Movie.objects.all()}, priority=0.7)}},
         name='django.contrib.sitemaps.views.sitemap')
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
