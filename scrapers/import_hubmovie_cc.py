@@ -14,37 +14,42 @@ import json
 import sys
 from cloudinary.uploader import upload
 
-from core.models import Movie, Director, Actor, Category
+from core.models import Movie, Director, Actor, Category, MovieLink
 
 
 def import_hubmovie_cc():
     with open(sys.argv[1]) as data:
         json_data = json.loads(data.read())
+    count = 0
     for line in json_data:
         for key, entry in line.items():
+            count += 1
             try:
-                name = key
+                name = key.strip()
                 year = entry['year']
                 try:
                     imdb_score = float(entry['imdb_score'])
                 except:
                     imdb_score = 0
-                    # TODO: for now skip entries with incomplete info, if imdb info scraper is complete remove continue
-                    # continue
 
-                # !!!!!!!!! TODO: scrape series too and solve this
-                entry['is_series'] = False
-                if entry['is_series']:
-                    m, created = Movie.objects.get_or_create(title=name, description=entry['description'], year=year,
-                                                             image_url=entry['image_path'], imdb_score=imdb_score)
-                    for episode, links in json.loads(entry['links']).items():
-                        episode_nr = episode.split('.')[0]
-                        for host, link in links.items():
-                            m.links.get_or_create(host=host, episode_nr=episode_nr, language=link[0][1], link=link[0][0])
+                # TODO: use update_or_create
+                if entry.get('is_series'):
+                    seasons = [key for key in entry.keys() if key.isdigit()]
+                    for season in seasons:
+                        m, created = Movie.objects.get_or_create(title=name + ' season ' + season, imdb_score=imdb_score,
+                                                                 description=entry.get('description', ''), year=year,
+                                                                 image_url='http://www.hubmovie.cc' + entry['image_path'][1:])
+                        # TODO: verify if links are bad and only then delete them
+                        MovieLink.objects.filter(movie=m).delete()
+                        for epi in entry[season]:
+                            for link_bundle in entry[season][epi]['links']:
+                                m.links.create(host=link_bundle['host'], episode_nr=epi, language='EN', link=link_bundle['link'][2:-1])
                 else:
                     m, created = Movie.objects.get_or_create(title=name, description=entry['description'],
                                                              image_url='http://www.hubmovie.cc' + entry['image_path'][1:],
                                                              imdb_score=imdb_score, year=year)
+                    # TODO: verify if links are bad and only then delete them
+                    MovieLink.objects.filter(movie=m).delete()
                     for link in entry['links']:
                         m.links.get_or_create(host=link['host'], link=link['link'][2:-1])  # strip b''
                 if entry['directors']:
@@ -63,6 +68,7 @@ def import_hubmovie_cc():
                     m.delete()
                 except Exception:
                     pass
+    print(count)
 
 
 if __name__ == '__main__':

@@ -32,6 +32,11 @@ def get_matching_ids():
     match_pairs = []
     for movie in movies[:]:
         title = movie[1]
+        try:
+            # cut season nr from series (added in importers)
+            title = title[:title.index('season')].strip()
+        except ValueError:
+            pass
         if movie[3]:
             title += movie[3]
         if title in imdb_movies:

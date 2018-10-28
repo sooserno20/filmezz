@@ -26,7 +26,7 @@ with open('movies_crawled.txt', 'r', encoding='utf-8') as f:
 RETRY_FILE = open('retry.txt', 'a+', encoding='utf-8')
 ERR_FILE = open('errors.txt', 'a+', encoding='utf-8')
 OUTPUT_FILE = open('filmezz_eu7.json', 'a+', encoding='utf-8')
-MOVIES_CRAWLED = open('movies_crawled.txt', 'a+', encoding='utf-8')
+MOVIES_CRAWLED = open('movies_crawled_filmezz.txt', 'a+', encoding='utf-8')
 t1 = datetime.now()
 is_estimated_time_calculated = Value(ctypes.c_bool, False)
 lock = Lock()

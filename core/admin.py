@@ -44,7 +44,16 @@ class MovieAdmin(admin.ModelAdmin):
     inlines = (MovieLinkInline, TranslationInline)
 
 
+class CategoryAdmin(admin.ModelAdmin):
+    search_fields = ('name',)
+
+
+class MovieLinkAdmin(admin.ModelAdmin):
+    search_fields = ('link', 'language')
+
+
 admin.site.register(Movie, MovieAdmin)
-admin.site.register(Actor)
-admin.site.register(Director)
-admin.site.register(Category)
+admin.site.register(Actor, CategoryAdmin)
+admin.site.register(Director, CategoryAdmin)
+admin.site.register(Category, CategoryAdmin)
+admin.site.register(MovieLink, MovieLinkAdmin)
