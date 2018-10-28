@@ -1,5 +1,6 @@
 from cloudinary.models import CloudinaryField
 from django.db import models
+from django.urls import reverse
 from django.utils.text import slugify
 
 
@@ -26,6 +27,9 @@ class Movie(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
             self.save()
+
+    def get_absolute_url(self):
+        return reverse('movie-detail', kwargs={'pk': self.pk, 'slug': self.slug})
 
 
 class MovieTranslation(models.Model):

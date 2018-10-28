@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'core',
     'cloudinary',
-    'imdb_data'
+    'imdb_data',
+    'django.contrib.sitemaps',
 ]
 
 MIDDLEWARE = [
@@ -167,3 +168,8 @@ django_heroku.settings(locals())
 #   api_secret = 'NdVMYoTN3bb3cQHfAVOCdgGYksk'
 # )
 TEMPLATE_DEBUG = True
+
+try:
+    import local_settings
+except ImportError:
+    pass
