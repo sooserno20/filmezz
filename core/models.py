@@ -34,7 +34,7 @@ class MovieTranslation(models.Model):
     language = models.CharField(null=True, blank=True, max_length=20)
 
     def __str__(self):
-        return '{}/{}'.format(self.title, self.language)
+        return '{}'.format(self.title)
 
 
 class MovieLink(models.Model):
