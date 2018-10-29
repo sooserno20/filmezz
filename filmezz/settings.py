@@ -11,11 +11,11 @@ https://docs.djangoproject.com/en/1.11/ref/settings/
 """
 
 import os
-import django_heroku
+
+# import django_heroku
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.11/howto/deployment/checklist/
@@ -26,8 +26,7 @@ SECRET_KEY = '8lz-kp^fgz2nv(@a!=c@80(lkbinnvnw_*+120hdl=kn@2qzad'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['*', ]
 
 # Application definition
 
@@ -46,6 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
+    'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -74,7 +74,6 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'filmezz.wsgi.application'
 
-
 # Database
 # https://docs.djangoproject.com/en/1.11/ref/settings/#databases
 
@@ -92,7 +91,6 @@ DATABASES = {
         'NAME': os.path.join(BASE_DIR, 'db2.sqlite3'),
     },
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/1.11/ref/settings/#auth-password-validators
@@ -112,7 +110,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
 # Internationalization
 # https://docs.djangoproject.com/en/1.11/topics/i18n/
 
@@ -126,12 +123,11 @@ USE_L10N = True
 
 USE_TZ = True
 
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.11/howto/static-files/
 
 STATIC_URL = '/static/'
-STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 
@@ -152,13 +148,20 @@ STATICFILES_DIRS = [
 # }
 
 CLOUDINARY = {
-  'cloud_name': 'sooserno86',
-  'api_key': '881796655951165',
-  'api_secret': 'kl_9n_kwMXNwycbJlAfnqhaNeF4',
+    'cloud_name': 'sooserno86',
+    'api_key': '881796655951165',
+    'api_secret': 'kl_9n_kwMXNwycbJlAfnqhaNeF4',
 }
 
-django_heroku.settings(locals())
+LOGGING = {'version': 1, 'disable_existing_loggers': False, 'formatters': {'verbose': {
+    'format': '%(asctime)s [%(process)d] [%(levelname)s] pathname=%(pathname)s lineno=%(lineno)s funcname=%(funcName)s %(message)s',
+    'datefmt': '%Y-%m-%d %H:%M:%S'}, 'simple': {'format': '%(levelname)s %(message)s'}},
+           'handlers': {'null': {'level': 'DEBUG', 'class': 'logging.NullHandler'},
+                        'console': {'level': 'DEBUG', 'class': 'logging.StreamHandler', 'formatter': 'verbose'}},
+           'loggers': {'testlogger': {'handlers': ['console'], 'level': 'INFO'}}}
 
+STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# django_heroku.settings(locals())
 
 # Cloudinary settings using python code. Run before pycloudinary is used.
 # import cloudinary
