@@ -1,4 +1,5 @@
 import os
+import urllib.request
 from datetime import datetime
 from os.path import abspath, dirname
 
@@ -27,12 +28,23 @@ print(HOSTS)
 
 def is_link_dead(link):
     try:
-        response = requests.get(link, headers=HEADERS, timeout=TIMEOUT, verify=False)
-        if 'vev.io' in link:
+        # follow redirects (http://vidto.me/mssg5q2xm4f8.html)
+        response = requests.get(link, headers=HEADERS, timeout=TIMEOUT, verify=False, allow_redirects=True)
+        if 'vidoza' in link.link:
             soup = BeautifulSoup(response.text, 'lxml')
-            warn = soup.find(class_='fa-exclamation-circle')
-            if warn and warn.text.lower() == 'invalid video specified':
+            # file size 0.0 mb
+            if soup.h2.span.text.index('0.0') != -1:
                 return True
+        elif 'vev.io' in link.link:
+            soup = BeautifulSoup(response.text, 'lxml')
+            if soup.title.text.lower().index('not found') != -1:
+                return True
+        elif 'flashx.co' in link.link:
+            soup = BeautifulSoup(response.text, 'lxml')
+            if soup.select('#main b')[0].text.lower().index('not found') != -1:
+                return True
+        else:
+            pass
     except Exception:
         return True
     if response.status_code >= 400:
