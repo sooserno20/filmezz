@@ -25,7 +25,7 @@ lock = Lock()
 def scrape_movie_part(page):
     global is_estimated_time_calculated
     result = {}
-    response = requests.get('{}{}'.format(MOVIES_URL, page, headers=HEADERS, timeout=10))
+    response = requests.get('{}{}'.format(MOVIES_URL, page), headers=HEADERS, timeout=10)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'lxml')
         links = [link.get('href') for link in soup.find(id='movies_cont').find_all('a')]
@@ -105,7 +105,7 @@ def scrape_movie_part(page):
 def scrape_series_part(page):
     global is_estimated_time_calculated
     result = {}
-    response = requests.get('{}{}'.format(SERIES_URL, page, headers=HEADERS, timeout=10))
+    response = requests.get('{}{}'.format(SERIES_URL, page), headers=HEADERS, timeout=10)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'lxml')
         links = [link.get('href') for link in soup.find(id='movies_cont').find_all('a')]

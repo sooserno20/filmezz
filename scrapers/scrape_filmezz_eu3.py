@@ -35,7 +35,7 @@ lock = Lock()
 def scrape_part(page):
     global is_estimated_time_calculated
     result = {}
-    response = requests.get('{}?p={}'.format(MOVIES_URL, page, headers=HEADERS, timeout=TIMEOUT))
+    response = requests.get('{}?p={}'.format(MOVIES_URL, page), headers=HEADERS, timeout=TIMEOUT)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'lxml')
         links = [link.get('href') for link in soup.find(class_='movie-list').find_all('a')
