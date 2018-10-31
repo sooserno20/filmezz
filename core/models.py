@@ -48,6 +48,7 @@ class MovieLink(models.Model):
     language = models.CharField(null=True, blank=True, max_length=20)
     episode_nr = models.CharField(null=True, blank=True, max_length=15)
     link = models.URLField()
+    verified = models.BooleanField(default=False)
 
     class Meta:
         ordering = ['episode_nr']
