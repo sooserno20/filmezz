@@ -1,3 +1,4 @@
+
 # !!!! TO RUN SCRIPT FIRST SET ALL MOVIELINKS to MovieLinks.objects.update(verified=False)
 import os
 import sys
@@ -32,9 +33,9 @@ print(len(HOSTS))
 
 def is_link_dead(link):
     try:
-        # follow redirects (http://vidto.me/mssg5q2xm4f8.html)
+        # follow redirects (http://vidto.me/mssg5q2xm4f8.html, http://gorillavid.in/u8w39oln4r2r)
         response = requests.get(link[1], headers=HEADERS, timeout=TIMEOUT, verify=False, allow_redirects=True)
-        if 'deleted' in response.text or 'not found' in response.text:
+        if 'deleted' in response.text or 'not found' in response.text or 'not available' in response.text:
             return True
         try:
             if 'vidoza' in link[1]:
@@ -46,7 +47,7 @@ def is_link_dead(link):
                 soup = BeautifulSoup(response.text, 'lxml')
                 if soup.title.text.lower().index('not found') != -1:
                     return True
-            elif 'flashx.co' in link[1]:
+            elif 'flashx' in link[1] or 'flashx' in response.url:
                 soup = BeautifulSoup(response.text, 'lxml')
                 if soup.select('#main b')[0].text.lower().index('not found') != -1:
                     return True
@@ -70,9 +71,9 @@ def is_link_dead(link):
                 if soup.h1.text.lower().index('no longer') != -1:
                     return True
             # javascript create element (hard to verify, or need selenium
-            # elif 'videa.hu' in link[1]:
+            # elif 'videa.hu' in link[1] or 'videakid.hu' in link[1]:
             #     soup = BeautifulSoup(response.text, 'lxml')
-            #     if soup.h1.text.lower().index('no longer') != -1:
+            #     if soup.h1.text.lower().index('parameter hiba') != -1:
             #         return True
             elif 'openload.co' in link[1]:
                 soup = BeautifulSoup(response.text, 'lxml')
@@ -90,15 +91,20 @@ def is_link_dead(link):
                 soup = BeautifulSoup(response.text, 'lxml')
                 if soup.select('#container')[0].text.lower().index('not found') != -1:
                     return True
+            elif 'viki.com' in link[1]:
+                soup = BeautifulSoup(response.text, 'lxml')
+                if soup(class_='video-error-message')[0].text.lower().index('unavailable') != -1:
+                    return True
         except Exception:
             pass
-    except Exception:
-        # !!!!!! remove this only temporary
-        # VERIFY if this is the case with other hosts too
-        if 'openload.co' in link[1]:
-            return False
+    except Exception as e:
+        print(link)
+        print(e)
         return True
-    if response.status_code >= 400:
+    if 400 <= response.status_code < 500:
+        # VERIFY if this is the case with other hosts too
+        # if 'openload.co' in link[1]:
+        #     return False
         return True
     return False
 
@@ -110,15 +116,16 @@ def is_link_dead(link):
 #             test_links.append(link.link)
 #             break
 
-# site_not_found = ['http://beta.vidup.me/3usqp60qdwlc']
-# timeout = ['briskfile.com']
+# site_not_found = ['http://beta.vidup.me/3usqp60qdwlc', 'http://www.streamin.to']
+# timeout = ['briskfile.com', 'http://promptfile.com']
+# hard_to_solve = ['https://www.youtube.com']
 #
-# test_links = ['http://promptfile.com/l/9A29D2D559-C86E28F9FE', 'http://vidup.me/488gitywibnm', 'http://flashx.tv/tj7l8p82uqmu.html', 'http://streamango.com/f/rfsronokstdmcbpb/1.1.2018.HDRip.XviD.AC3-EVO.avi-tt3445702-L2W.mp4', 'https://videakid.hu/player?v=SUhesWIihui450QP', 'http://vidto.me/ol5ijsn9oz06', 'http://streamin.to/oqamuq09miy7', 'http://estream.to/5sakjckpywe0.html', 'https://www.viki.com/player/1055371v', 'https://www.youtube.com/embed/JZ1MOQfCmhE', 'https://vev.io/j93wg90j8odp', 'http://estream.to/5sakjckpywe0.html', 'http://vidup.me/488gitywibnm', 'http://openload.co/f/Ye92PkVo4Go/dmd-meganleavey.2017.bdrip.x264.mkv.mp4', 'http://filez.tv/Wut', 'http://vidlox.tv/embed-jcodvfzcfj0m.html', 'http://gorillavid.in/u8w39oln4r2r', 'http://bestreams.net/8xqu3gb3od08', 'http://streamplay.to/isrxe0rwm7zd', 'http://vidto.me/ol5ijsn9oz06', 'http://flashx.tv/tj7l8p82uqmu.html']
+# test_links = []
 # for l in test_links:
-#     is_link_dead(l)
+#     is_link_dead(('id', l))
 #
 # # indavideo.hu only from hungary, remove??
-# to_remove = ['allmyvideos.net', 'kingvid.tv', 'faststream.ws', 'noslocker.com']
+# to_remove = ['allmyvideos.net', 'kingvid.tv', 'faststream.ws', 'noslocker.com', 'filez.tv', 'bestreams.net']
 #
 # print(test_links)
 # exit()
@@ -154,8 +161,6 @@ for process in processes:
 for process in processes:
     process.join()
 
-# print(len(processes))
-# print(grouped_links)
 exit()
 #
 # bad_count = 0
@@ -187,7 +192,8 @@ exit()
 #
 #
 # def scrape():
-#     pool_size = cpu_count() // 8
+#     print('scrape')
+#     pool_size = cpu_count()
 #     pages = list(MovieLink.objects.filter(host__icontains='openload').values_list('id', 'link')[:200])
 #     pool = Pool(pool_size)
 #     data = pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
