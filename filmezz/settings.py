@@ -24,9 +24,9 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = '8lz-kp^fgz2nv(@a!=c@80(lkbinnvnw_*+120hdl=kn@2qzad'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
+DEBUG = False
 
-ALLOWED_HOSTS = ['*', ]
+ALLOWED_HOSTS = ['e-movies.eu', 'www.e-movies.eu']
 
 # Application definition
 
@@ -45,7 +45,7 @@ INSTALLED_APPS = [
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
-    'whitenoise.middleware.WhiteNoiseMiddleware',
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
@@ -160,7 +160,7 @@ LOGGING = {'version': 1, 'disable_existing_loggers': False, 'formatters': {'verb
                         'console': {'level': 'DEBUG', 'class': 'logging.StreamHandler', 'formatter': 'verbose'}},
            'loggers': {'testlogger': {'handlers': ['console'], 'level': 'INFO'}}}
 
-STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
+# STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # django_heroku.settings(locals())
 
 # Cloudinary settings using python code. Run before pycloudinary is used.
@@ -170,9 +170,9 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #   api_key = '549734456738837',
 #   api_secret = 'NdVMYoTN3bb3cQHfAVOCdgGYksk'
 # )
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = False
 
 try:
-    import local_settings
+    from filmezz.local_settings import *
 except ImportError:
     pass

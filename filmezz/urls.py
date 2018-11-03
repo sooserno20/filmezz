@@ -43,4 +43,4 @@ urlpatterns = [
     url(r'^sitemap\.xml$', sitemap, {'sitemaps': {'static': StaticViewSitemap,
                                                   'movies': GenericSitemap({'queryset': Movie.objects.all()}, priority=0.7)}},
         name='django.contrib.sitemaps.views.sitemap')
-] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+]# + static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)
