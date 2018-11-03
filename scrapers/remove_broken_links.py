@@ -21,7 +21,7 @@ django.setup()
 urllib3.disable_warnings()
 from core.models import Movie, MovieLink
 
-TIMEOUT = 5
+TIMEOUT = 10
 HEADERS = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) '
                          'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
 
@@ -97,9 +97,7 @@ def is_link_dead(link):
                     return True
         except Exception:
             pass
-    except Exception as e:
-        print(link)
-        print(e)
+    except Exception:
         return True
     if 400 <= response.status_code < 500:
         # VERIFY if this is the case with other hosts too

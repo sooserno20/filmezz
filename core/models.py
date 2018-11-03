@@ -23,10 +23,8 @@ class Movie(models.Model):
         return self.title
 
     def save(self, *args, **kwargs):
+        self.slug = slugify(self.title)
         super().save(*args, **kwargs)
-        if not self.slug:
-            self.slug = slugify(self.title)
-            self.save()
 
     def get_absolute_url(self):
         return reverse('movie-detail', kwargs={'pk': self.pk, 'slug': self.slug})
