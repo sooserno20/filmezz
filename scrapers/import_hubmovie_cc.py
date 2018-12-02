@@ -23,6 +23,8 @@ def import_hubmovie_cc():
     count = 0
     for line in json_data:
         for key, entry in line.items():
+            if not key.strip():
+                continue
             count += 1
             try:
                 name = key.strip()

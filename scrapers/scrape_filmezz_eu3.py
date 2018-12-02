@@ -1,3 +1,6 @@
+import os
+from os.path import dirname, abspath
+
 import urllib3
 from PIL import Image
 import pytesseract
@@ -11,7 +14,18 @@ from sys import exit
 
 import requests
 from bs4 import BeautifulSoup
+from django.utils.text import slugify
 from requests.exceptions import Timeout
+import django
+import sys
+
+project_path = dirname(dirname(abspath(__file__)))
+sys.path.append(project_path)
+os.environ['DJANGO_SETTINGS_MODULE'] = 'filmezz.settings'
+django.setup()
+
+from core.models import Movie
+
 urllib3.disable_warnings()
 
 TIMEOUT = 20
@@ -95,6 +109,7 @@ def scrape_part(page):
                 result[name]['imdb_score'] = soup_detail.find(class_='score').text if soup_detail.find(
                     class_='score') else 0
                 result[name]['image_path'] = soup_detail.find('img').get('src')
+                print(link)
                 print(name)
                 timeo = False
                 for linkk in result[name]['links'][:]:
@@ -168,7 +183,7 @@ def scrape_part(page):
 
 
 def scrape():
-    pool_size = cpu_count() * 8
+    pool_size = cpu_count()
     pages = list(range(1, calculate_last_page()))
     pool = Pool(pool_size)
     # for debugging comment out this
@@ -176,7 +191,7 @@ def scrape():
     pool.close()
     pool.join()
     # for debugging
-    # scrape_part(1)
+    # scrape_part(23)
 
 
 def calculate_last_page():
