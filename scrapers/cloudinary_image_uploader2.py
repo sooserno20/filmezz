@@ -16,6 +16,15 @@ from cloudinary.uploader import upload
 
 from core.models import Movie
 
+IMAGES_ALREADY_MAPPED = {}
+try:
+    with open('movie_image_mappings.txt', 'r', encoding='utf-8') as f:
+        for line in f:
+            v = line.split(',')
+            IMAGES_ALREADY_MAPPED[v[0]] = v[1]
+except IOError:
+    pass
+
 MAPPING_FILE = open('movie_image_mappings.txt', 'a+', encoding='utf-8')
 
 
@@ -30,6 +39,10 @@ def upload_images():
                 count_already_processed += 1
                 if count_already_processed % 300 == 0:
                     print('{} movies already processed'.format(count_already_processed))
+                continue
+            if movie.image_url in IMAGES_ALREADY_MAPPED:
+                movie.image_url = IMAGES_ALREADY_MAPPED[movie.image_url]
+                movie.save()
                 continue
 
             file_name = os.path.join(dirname(dirname(abspath(__file__))), 'media', 'movie_images', str(movie.image_url).

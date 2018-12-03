@@ -110,6 +110,7 @@ def scrape_movie_part(page):
                     result[name]['imdb_score'] = soup_detail.find(id='score').text if soup_detail.find(id='score') else 0
                     result[name]['image_path'] = soup_detail.find(class_='poster ').get('src') if soup_detail.find(class_='poster ') else ''
                     with lock:
+                        link = link.replace(SITE_URL, '.')
                         MOVIES_CRAWLED.write(link + '\n')
                         MOVIES_CRAWLED.flush()
             except Exception as e:
