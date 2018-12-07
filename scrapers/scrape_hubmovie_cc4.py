@@ -34,21 +34,24 @@ HEADERS = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) '
 RETRY_FILE = open('retry.txt', 'a+', encoding='utf-8')
 ERR_FILE = open('errors.txt', 'a+', encoding='utf-8')
 
+def strip_nbsp(title):
+    if title.endswith('nbsp'):
+        return title[:-4]
+    return title
+
 try:
     with open('movies_crawled_hubmovie.txt', 'r', encoding='utf-8') as f:
         MOVIES_ALREADY_CRAWLED = f.read().split('\n')
+        NORMALIZED_MOVIES_ALREADY_CRAWLED = [strip_nbsp(m) for m in MOVIES_ALREADY_CRAWLED]
 except IOError:
     MOVIES_ALREADY_CRAWLED = []
-
+    NORMALIZED_MOVIES_ALREADY_CRAWLED = []
 
 MOVIES_CRAWLED = open('movies_crawled_hubmovie.txt', 'a+', encoding='utf-8')
 t1 = datetime.now()
 is_estimated_time_calculated = Value(ctypes.c_bool, False)
 lock = Lock()
-
-
-def unslugify(slug):
-    return slug.replace('-', ' ').strip().capitalize()
+MOVIES_ALREADY_CRAWLED2 = [list(m.keys())[0] for m in MOVIES_ALREADY_CRAWLED]
 
 
 def scrape_movie_part(page):
@@ -147,6 +150,7 @@ def scrape_series_part(page):
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'lxml')
         links = [link.get('href') for link in soup.find(id='movies_cont').find_all('a')]
+                 # if link.get('href') not in MOVIES_ALREADY_CRAWLED]
         timeouts = 0
         for link in links[:1]:
             try:
@@ -183,6 +187,7 @@ def scrape_series_part(page):
                     result[name]['is_series'] = True
 
                     epi_links = ['{}{}'.format(SITE_URL, epi_link.a.get('href')) for epi_link in soup_detail.find_all(class_='link_go')]
+                    already_links = [l[link_part] for l in MOVIES_ALREADY_CRAWLED if list(l.keys())[0] == link_part][0]
                     for epi_link in epi_links:
                         try:
                             response = requests.get(epi_link, headers=HEADERS, timeout=10)
@@ -265,13 +270,13 @@ def scrape_series():
     pool_size = 2
     pages = list(range(1, calculate_last_series_page()))
     pages = list(range(1, 3))
-    pool = Pool(pool_size)
+    # pool = Pool(pool_size)
     # for debugging comment out this
-    data = pool.map(func=scrape_series_part, iterable=pages, chunksize=int(len(pages) / pool_size))
-    pool.close()
-    pool.join()
+    # data = pool.map(func=scrape_series_part, iterable=pages, chunksize=int(len(pages) / pool_size))
+    # pool.close()
+    # pool.join()
     # for debugging
-    # scrape_series_part(1)
+    scrape_series_part(1)
     return data
 
 
@@ -321,20 +326,20 @@ if __name__ == "__main__":
     # movies_in_db = Movie.objects.filter(is_series=False).values_list('title', flat=True)
     # movies_in_db = [slugify(title) for title in movies_in_db]
 
-    data = scrape_movies()
-    if data:
-        with open('hubmovie_cc5.json', 'a+', encoding='utf-8') as f:
-            f.write('[\n')
-            for entry in data:
-                json.dump(entry, f)
-                # if entry != data[-1]:
-                #     f.write(',')
-                f.write(',\n')
-                # f.write('\n')
-            # f.write(']')
-            t2 = datetime.now()
-            total = t2 - t1
-            print("Scraping finished in: %s" % (total))
+    # data = scrape_movies()
+    # if data:
+    #     with open('hubmovie_cc5.json', 'a+', encoding='utf-8') as f:
+    #         f.write('[\n')
+    #         for entry in data:
+    #             json.dump(entry, f)
+    #             # if entry != data[-1]:
+    #             #     f.write(',')
+    #             f.write(',\n')
+    #             # f.write('\n')
+    #         # f.write(']')
+    #         t2 = datetime.now()
+    #         total = t2 - t1
+    #         print("Scraping finished in: %s" % (total))
 
     # series_in_db = Movie.objects.filter(is_series=True).values_list('title', flat=True)
     # temp = []

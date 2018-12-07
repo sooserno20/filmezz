@@ -49,9 +49,13 @@ RETRY_FILE = open('retry.txt', 'a+', encoding='utf-8')
 ERR_FILE = open('errors.txt', 'a+', encoding='utf-8')
 OUTPUT_FILE = open('filmezz_eu8.json', 'a+', encoding='utf-8')
 MOVIES_CRAWLED = open('movies_crawled_filmezz.json', 'a+', encoding='utf-8')
+SERIES_IN_DB = Movie.objects.filter(is_series=True, translations__language='Hungarian').\
+    values_list('translations__title', flat=True)  # specific only for entries imported from filmezz.eu
+SERIES_IN_DB = [slugify(s) for s in SERIES_IN_DB]
 t1 = datetime.now()
 is_estimated_time_calculated = Value(ctypes.c_bool, False)
 lock = Lock()
+MOVIES_ALREADY_CRAWLED2 = [list(m.keys())[0] for m in MOVIES_ALREADY_CRAWLED]
 
 
 def scrape_part(page):
@@ -60,10 +64,13 @@ def scrape_part(page):
     response = requests.get('{}?p={}'.format(MOVIES_URL, page), headers=HEADERS, timeout=TIMEOUT)
     if response.status_code == 200:
         soup = BeautifulSoup(response.text, 'lxml')
+        links = [link.get('href') for link in soup.find(class_='movie-list').find_all('a')]
+        series_links = [link for link in links if link[8:-7] in SERIES_IN_DB]
         links = [link.get('href') for link in soup.find(class_='movie-list').find_all('a')
-                 if link.get('href') not in [list(m.keys())[0] for m in MOVIES_ALREADY_CRAWLED]]
+                 if link.get('href') not in MOVIES_ALREADY_CRAWLED2]
+        links = list(set(links + series_links))
         timeouts = 0
-        for link in links[:1]:
+        for link in links[:2]:
             try:
                 link_part = link
                 link = '{}{}'.format(SITE_URL, link)
@@ -87,13 +94,18 @@ def scrape_part(page):
                 if not movie_links:
                     continue
 
+                already_links = [l[link_part] for l in MOVIES_ALREADY_CRAWLED if list(l.keys())[0] == link_part][0]
                 result[name] = {
                     'links': [{'link': str(movie_link.find('a').get('href').split('/')[-1]),
                                'info': str(movie_link.find(class_='col-sm-4 col-xs-12').text.strip()),
                                'host': str(movie_link.div.text.strip()),
-                               'language': str(movie_link.div.ul.li.get('title'))} for movie_link in movie_links],
+                               'language': str(movie_link.div.ul.li.get('title'))} for movie_link in movie_links
+                              if str(movie_link.find('a').get('href').split('/')[-1]) not in already_links],
                     'description': soup_detail.find('div', class_='text').text.strip()
                                         if soup_detail.find('div', class_='text') else ''}
+                if not result[name]['links']:
+                    del result[name]
+                    continue
                 result[name]['is_series'] = 'epi' in \
                                             movie_links[0].find(class_='col-sm-4 col-xs-12').text  # epizod, episode
                 result[name]['hungarian_name'] = hungarian_name
@@ -198,13 +210,13 @@ def scrape():
     pool_size = cpu_count()
     pool_size = 2
     pages = list(range(1, calculate_last_page()))
-    pool = Pool(pool_size)
     # for debugging comment out this
-    pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
-    pool.close()
-    pool.join()
+    # pool = Pool(pool_size)
+    # pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
+    # pool.close()
+    # pool.join()
     # for debugging
-    # scrape_part(23)
+    scrape_part(23)
 
 
 def calculate_last_page():
