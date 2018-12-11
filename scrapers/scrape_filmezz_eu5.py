@@ -32,8 +32,8 @@ urllib3.disable_warnings()
 TIMEOUT = 20
 SITE_URL = 'http://filmezz.eu/'
 MOVIES_URL = 'http://filmezz.eu/kereses.php'
-HEADERS = {'user-agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_11_6) '
-                         'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/53.0.2785.143 Safari/537.36'}
+HEADERS = {'user-agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) '
+                         'Chrome/70.0.3538.77 Safari/537.36'}
 try:
     with open('movies_crawled_filmezz.json', 'r', encoding='utf-8') as f:
         MOVIES_ALREADY_CRAWLED = f.read().split('\n')
@@ -70,7 +70,7 @@ def scrape_part(page):
                  if link.get('href') not in MOVIES_ALREADY_CRAWLED2]
         links = list(set(links + series_links))
         timeouts = 0
-        for link in links[:2]:
+        for link in links:
             try:
                 link_part = link
                 link = '{}{}'.format(SITE_URL, link)
@@ -89,12 +89,21 @@ def scrape_part(page):
                     name = name_and_year
                     year = 0
                 name, hungarian_name = hungarian_name, name  # use the english name as main
+                if name == 'Linkek a filmhez':
+                    name = hungarian_name
                 movie_links = soup_detail.find(class_='content-box').find(class_='url-list').\
                                   find_all('li', recursive=False)[1:]
                 if not movie_links:
                     continue
 
-                already_links = [l[link_part] for l in MOVIES_ALREADY_CRAWLED if list(l.keys())[0] == link_part][0]
+                try:
+                    already_links = [l[link_part] for l in MOVIES_ALREADY_CRAWLED if list(l.keys())[0] == link_part]
+                    tmp_links = []
+                    for li in already_links:
+                        tmp_links.extend(li)
+                    already_links = tmp_links
+                except IndexError:
+                    already_links = []
                 result[name] = {
                     'links': [{'link': str(movie_link.find('a').get('href').split('/')[-1]),
                                'info': str(movie_link.find(class_='col-sm-4 col-xs-12').text.strip()),
@@ -129,8 +138,9 @@ def scrape_part(page):
                 result[name]['imdb_score'] = soup_detail.find(class_='score').text if soup_detail.find(
                     class_='score') else 0
                 result[name]['image_path'] = soup_detail.find('img').get('src')
-                print(link)
-                print(name)
+                # print(link)
+                # print(name)
+                # print(page)
                 timeo = False
                 unfollowed_links = copy.deepcopy(result[name]['links'])
                 for linkk in result[name]['links'][:]:
@@ -138,7 +148,7 @@ def scrape_part(page):
                         linkk['link'] = urllib.parse.unquote(linkk['link'])
                         session = requests.session()
                         try:
-                            resp = session.get(linkk['link'], timeout=TIMEOUT, verify=False)
+                            resp = session.get(linkk['link'], headers=HEADERS, timeout=TIMEOUT, verify=False)
                         except Timeout as e:
                             if 'filmezz' not in e.args[0].pool.host:
                                 result[name]['links'].remove(linkk)
@@ -159,11 +169,10 @@ def scrape_part(page):
                         text = pytesseract.image_to_string(im, lang='eng', config='--psm 7')
                         text = text.strip().replace(':', '').replace('O', '0').replace('=', '').strip()
                         form_data = {'captcha': eval(text)}
-                        resp = session.post(linkk['link'], data=form_data)
+                        resp = session.post(linkk['link'], data=form_data, headers=HEADERS)
                         linkk['link'] = resp.url
                     except Exception as e:
                         print('EXC {} {} {}'.format(str(name), str(linkk['link']), str(timeo)))
-                        print(e.message)
                         result[name]['links'].remove(linkk)
                 if timeo:
                     continue
@@ -178,6 +187,7 @@ def scrape_part(page):
                     MOVIES_CRAWLED.flush()
             except Exception as e:
                 print(e)
+                # print(e.message)
                 if isinstance(e, Timeout):
                     timeouts += 1
                     if timeouts == 3:
@@ -208,15 +218,15 @@ def scrape_part(page):
 
 def scrape():
     pool_size = cpu_count()
-    pool_size = 2
+    # pool_size = 2
     pages = list(range(1, calculate_last_page()))
     # for debugging comment out this
-    # pool = Pool(pool_size)
-    # pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
-    # pool.close()
-    # pool.join()
+    pool = Pool(pool_size)
+    pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
+    pool.close()
+    pool.join()
     # for debugging
-    scrape_part(23)
+    # scrape_part(13)
 
 
 def calculate_last_page():
@@ -227,7 +237,7 @@ def calculate_last_page():
     # soup = BeautifulSoup(response.text, 'lxml')
     # links = soup.select('#movies_cont > a')
     # while not links:
-    return 3
+    return 478
 
 
 if __name__ == "__main__":

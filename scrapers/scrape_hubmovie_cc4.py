@@ -51,7 +51,7 @@ MOVIES_CRAWLED = open('movies_crawled_hubmovie.txt', 'a+', encoding='utf-8')
 t1 = datetime.now()
 is_estimated_time_calculated = Value(ctypes.c_bool, False)
 lock = Lock()
-MOVIES_ALREADY_CRAWLED2 = [list(m.keys())[0] for m in MOVIES_ALREADY_CRAWLED]
+# MOVIES_ALREADY_CRAWLED2 = [list(m.keys())[0] for m in MOVIES_ALREADY_CRAWLED]
 
 
 def scrape_movie_part(page):
@@ -76,7 +76,7 @@ def scrape_movie_part(page):
         # links = links_tmp
         # links = [link for link in links if link.split('/')[-1] not in movies_in_db]
         timeouts = 0
-        for link in links[:2]:
+        for link in links:
             try:
                 if link.startswith('.'):
                     link = '{}{}'.format(SITE_URL, link[1:])
@@ -152,7 +152,7 @@ def scrape_series_part(page):
         links = [link.get('href') for link in soup.find(id='movies_cont').find_all('a')]
                  # if link.get('href') not in MOVIES_ALREADY_CRAWLED]
         timeouts = 0
-        for link in links[:1]:
+        for link in links:
             try:
                 if link.startswith('.'):
                     link = '{}{}'.format(SITE_URL, link[1:])
@@ -187,7 +187,6 @@ def scrape_series_part(page):
                     result[name]['is_series'] = True
 
                     epi_links = ['{}{}'.format(SITE_URL, epi_link.a.get('href')) for epi_link in soup_detail.find_all(class_='link_go')]
-                    already_links = [l[link_part] for l in MOVIES_ALREADY_CRAWLED if list(l.keys())[0] == link_part][0]
                     for epi_link in epi_links:
                         try:
                             response = requests.get(epi_link, headers=HEADERS, timeout=10)
@@ -251,9 +250,9 @@ def scrape_series_part(page):
 
 def scrape_movies():
     pool_size = cpu_count() * 8
-    pool_size = 2
+    pool_size = 10
     pages = list(range(1, calculate_last_movie_page()))
-    pages = list(range(1, 4))
+    # pages = list(range(1, 4))
     pool = Pool(pool_size)
     # for debugging comment out this
     data = pool.map(func=scrape_movie_part, iterable=pages, chunksize=int(len(pages) / pool_size))
@@ -267,16 +266,16 @@ def scrape_movies():
 def scrape_series():
     pool_size = min(cpu_count() * 8, calculate_last_series_page() - 1)
     pool_size = 10  # seems to be a max connection set at hubmovies.cc (508 errors)
-    pool_size = 2
+    # pool_size = 2
     pages = list(range(1, calculate_last_series_page()))
-    pages = list(range(1, 3))
-    # pool = Pool(pool_size)
+    # pages = list(range(1, 3))
+    pool = Pool(pool_size)
     # for debugging comment out this
-    # data = pool.map(func=scrape_series_part, iterable=pages, chunksize=int(len(pages) / pool_size))
-    # pool.close()
-    # pool.join()
+    data = pool.map(func=scrape_series_part, iterable=pages, chunksize=int(len(pages) / pool_size))
+    pool.close()
+    pool.join()
     # for debugging
-    scrape_series_part(1)
+    # scrape_series_part(1)
     return data
 
 
@@ -326,20 +325,20 @@ if __name__ == "__main__":
     # movies_in_db = Movie.objects.filter(is_series=False).values_list('title', flat=True)
     # movies_in_db = [slugify(title) for title in movies_in_db]
 
-    # data = scrape_movies()
-    # if data:
-    #     with open('hubmovie_cc5.json', 'a+', encoding='utf-8') as f:
-    #         f.write('[\n')
-    #         for entry in data:
-    #             json.dump(entry, f)
-    #             # if entry != data[-1]:
-    #             #     f.write(',')
-    #             f.write(',\n')
-    #             # f.write('\n')
-    #         # f.write(']')
-    #         t2 = datetime.now()
-    #         total = t2 - t1
-    #         print("Scraping finished in: %s" % (total))
+    data = scrape_movies()
+    if data:
+        with open('hubmovie_cc5.json', 'a+', encoding='utf-8') as f:
+            f.write('[\n')
+            for entry in data:
+                json.dump(entry, f)
+                # if entry != data[-1]:
+                #     f.write(',')
+                f.write(',\n')
+                # f.write('\n')
+            # f.write(']')
+            t2 = datetime.now()
+            total = t2 - t1
+            print("Scraping finished in: %s" % (total))
 
     # series_in_db = Movie.objects.filter(is_series=True).values_list('title', flat=True)
     # temp = []
