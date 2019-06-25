@@ -250,7 +250,7 @@ def scrape_series_part(page):
 
 def scrape_movies():
     pool_size = cpu_count() * 8
-    pool_size = 10
+    pool_size = 8
     pages = list(range(1, calculate_last_movie_page()))
     # pages = list(range(1, 4))
     pool = Pool(pool_size)
@@ -264,8 +264,9 @@ def scrape_movies():
 
 
 def scrape_series():
+    # TODO: save series on the go, not just at the finish
     pool_size = min(cpu_count() * 8, calculate_last_series_page() - 1)
-    pool_size = 10  # seems to be a max connection set at hubmovies.cc (508 errors)
+    pool_size = 2  # seems to be a max connection set at hubmovies.cc (508 errors)
     # pool_size = 2
     pages = list(range(1, calculate_last_series_page()))
     # pages = list(range(1, 3))
@@ -287,12 +288,12 @@ def calculate_last_movie_page():
     # soup = BeautifulSoup(response.text, 'lxml')
     # links = soup.select('#movies_cont > a')
     # while not links:
-    return 317
+    return 417
 
 
 def calculate_last_series_page():
     """Calculate last page with binary search"""
-    return 57
+    return 64
 
 
 if __name__ == "__main__":
@@ -339,6 +340,8 @@ if __name__ == "__main__":
             t2 = datetime.now()
             total = t2 - t1
             print("Scraping finished in: %s" % (total))
+    # print('NO SERIES')
+    # sys.exit(0)
 
     # series_in_db = Movie.objects.filter(is_series=True).values_list('title', flat=True)
     # temp = []

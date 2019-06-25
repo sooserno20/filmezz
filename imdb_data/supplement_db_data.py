@@ -28,7 +28,6 @@ def get_matching_ids():
                    for imdb_movie in ImdbMovie.objects.using('imdb').values_list('id', 'title', 'year')}
     movies = [(movie[0], movie[1].strip().lower(), movie[2], movie[3]) for movie in
               Movie.objects.values_list('id', 'title', 'translations__title', 'year')]
-    count = 0
     match_pairs = []
     for movie in movies[:]:
         title = movie[1]
@@ -41,11 +40,11 @@ def get_matching_ids():
             title += movie[3]
         if title in imdb_movies:
             match_pairs.append((imdb_movies[title], movie[0]))
-            imdb_movies.pop(title)
-            movies.remove(movie)
-            count += 1
+            # imdb_movies.pop(title)
+            # movies.remove(movie)
+    match_pairs = list(set(match_pairs))
     print('Matched pairs')
-    print(count)
+    print(len(match_pairs))
 
     # alias_movies = {imdb_movie[1].strip().lower(): imdb_movie[0] for imdb_movie in
     #                 TitleAlias.objects.using('imdb').values_list('title_id_id', 'title')}

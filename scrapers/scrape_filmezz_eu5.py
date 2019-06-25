@@ -137,7 +137,11 @@ def scrape_part(page):
                 result[name]['actors'] = actors
                 result[name]['imdb_score'] = soup_detail.find(class_='score').text if soup_detail.find(
                     class_='score') else 0
-                result[name]['image_path'] = soup_detail.find('img').get('src')
+                try:
+                    result[name]['image_path'] = [img.get('src') for img in soup_detail.find_all('img') if 'nagykep'
+                                                  in img.get('src')][0]
+                except IndexError:
+                    result[name]['image_path'] = None
                 # print(link)
                 # print(name)
                 # print(page)
@@ -187,6 +191,7 @@ def scrape_part(page):
                     MOVIES_CRAWLED.flush()
             except Exception as e:
                 print(e)
+                print("on line: " + sys.exc_info()[2].tb_lineno)
                 # print(e.message)
                 if isinstance(e, Timeout):
                     timeouts += 1
@@ -226,7 +231,9 @@ def scrape():
     pool.close()
     pool.join()
     # for debugging
-    # scrape_part(13)
+    # scrape_part(22)
+    # for i in range(1, 507):
+    #     scrape_part(i)
 
 
 def calculate_last_page():
@@ -237,7 +244,8 @@ def calculate_last_page():
     # soup = BeautifulSoup(response.text, 'lxml')
     # links = soup.select('#movies_cont > a')
     # while not links:
-    return 478
+    # return 507
+    return 660
 
 
 if __name__ == "__main__":

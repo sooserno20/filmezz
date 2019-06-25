@@ -33,8 +33,10 @@ def import_data(dir):
                     Movie.objects.using('imdb').bulk_create(movies)
                     movies = []
                     print('write')
+                    print('1')
             except Exception as e:
                 print(e)
+                print('1')
         Movie.objects.using('imdb').bulk_create(movies)
 
     print('DONE1')
@@ -51,14 +53,19 @@ def import_data(dir):
     print('DONE1.5')
     with open(os.path.join(dir, 'title.ratings.tsv')) as title_ratings:
         title_ratings.readline()
+        count = 0
+        exc_count = 0
         for line in title_ratings:
+            count += 1
             try:
                 movie_data = convert_to_none(line.split('\t'))
                 m = Movie.objects.using('imdb').get(id=movie_data[0])
                 m.rating = movie_data[1]
                 m.save(using='imdb')
             except Exception as e:
-                print(e)
+                exc_count += 1
+        print(count)
+        print(exc_count)
 
     print('DONE2')
     with open(os.path.join(dir, 'title.akas.tsv')) as title_alias:
@@ -76,8 +83,10 @@ def import_data(dir):
                     TitleAlias.objects.using('imdb').bulk_create(aliases)
                     aliases = []
                     print('write')
+                    print('3')
             except Exception as e:
                 print(e)
+                print('3')
         TitleAlias.objects.using('imdb').bulk_create(aliases)
 
     print('DONE3')
@@ -93,8 +102,10 @@ def import_data(dir):
                     Name.objects.using('imdb').bulk_create(names)
                     names = []
                     print('write')
+                    print('4')
             except Exception as e:
                 print(e)
+                print('4')
         Name.objects.using('imdb').bulk_create(names)
 
     print('DONE4')
@@ -110,8 +121,10 @@ def import_data(dir):
                     TitlePrincipals.objects.using('imdb').bulk_create(principals)
                     principals = []
                     print('write')
+                    print('5')
             except Exception as e:
                 print(e)
+                print('5')
         TitlePrincipals.objects.using('imdb').bulk_create(principals)
 
     print('DONE5')
