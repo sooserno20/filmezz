@@ -25,7 +25,7 @@ for movie in exclude_list:
 exclude_list.extend(exclude_set)
 movies_dict = {}
 
-api_key = 'd1b4ba77'
+api_key = 'ff8ef544'
 matches = []
 for movie in exclude_set:
     im = ImdbMovie.objects.using('imdb').filter(title=movie, title_type__icontains='series').first()
@@ -56,9 +56,9 @@ for movie in Movie.objects.exclude(title__in=exclude_list):
         movies_dict[movie.title] = movie.id
 print(len(movies_dict))
 #api_keys = ['cccd8b10', 'a84076d8', '86808a56', '8525945b', '96677395', '7169db02']
-api_keys = ['8a6bb036', 'ada6416c', 'd2a268f6', 'c6ad907d', '3130e990', '124c00f1', 'b4b3a728', 'bf438f8f',
-            '38f1ce32', '2b790166', '16f256b9', 'ef58d6e', '2a2c777a', 'b2525faf', 'd078cb33', '212a217f', '117c9473', 'c915e4e5', '64cb8641', 'd1b4ba77']
-
+# api_keys = ['8a6bb036', 'ada6416c', 'd2a268f6', 'c6ad907d', '3130e990', '124c00f1', 'b4b3a728', 'bf438f8f',
+#             '38f1ce32', '2b790166', '16f256b9', 'ef58d6e', '2a2c777a', 'b2525faf', 'd078cb33', '212a217f', '117c9473', 'c915e4e5', '64cb8641', 'd1b4ba77']
+api_keys = ['ba207e22', 'ff8ef544']
 
 c = 0
 count = 0
@@ -94,13 +94,17 @@ for movie in movies_dict:
             m.save()
             count += 1
     else:
+        if response.status_code == 522:
+            print('Connection timed out')
+            exit()
         while response.status_code == 401:
             try:
                 api_key = api_keys.pop()
                 print(api_key)
             except IndexError:
                 print(movie)
-                break
+                print('No more valid keys')
+                exit(1)
             response = requests.get('http://www.omdbapi.com/?t="{}"&plot=full&apikey={}'.format(quote(movie), api_key))
         print(response.content)
         print(movie)
