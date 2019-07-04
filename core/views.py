@@ -26,6 +26,7 @@ class MovieList(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
         category_options = list(Category.objects.all().values_list('name', flat=True))
+        category_options = [category.capitalize() for category in category_options]
         data['category_options'] = sort_accented_list(category_options)
         data['end_minus_five'] = data['paginator'].page_range.stop - 5
         data['last_page'] = data['paginator'].page_range.stop - 1
@@ -93,6 +94,7 @@ class MovieDetail(DetailView):
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
         category_options = list(Category.objects.all().values_list('name', flat=True))
+        category_options = [category.capitalize() for category in category_options]
         data['category_options'] = sort_accented_list(category_options)
         return data
 

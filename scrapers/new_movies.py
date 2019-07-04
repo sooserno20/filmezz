@@ -57,6 +57,7 @@ subprocess.call(["python", "../imdb_data/supplement_db_data.py"])
 subprocess.call(["python", "supplement_description_omdb_api.py"])
 # subprocess.call(["python", "cloudinary_image_uploader2.py"])
 subprocess.call(["cp", "../db.sqlite3", dir_name + '/db_processed.sqlite3'])
+subprocess.call(["python", "cleanup_db.py"])
 
 # MERGE
 subprocess.call(["mv", "../db.sqlite3", "../db2.sqlite3"])
