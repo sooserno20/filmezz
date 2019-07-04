@@ -3,7 +3,7 @@ import sys
 from os.path import abspath, dirname
 
 import django
-from django.db import OperationalError
+from django.db import OperationalError, IntegrityError
 
 project_path = dirname(dirname(abspath(__file__)))
 sys.path.append(project_path)
@@ -26,13 +26,28 @@ def create_movie(movie):
                              duration=movie.duration)
     for actor in movie.actors.all():
         a = Actor.objects.filter(name__iexact=actor.name).first()
-        m.actors.add(a)
+        if a:
+            try:
+                m.actors.add(a)
+            except IntegrityError:
+                print('Actor')
+                print(a.pk)
     for director in movie.directors.all():
         d = Director.objects.filter(name__iexact=director.name).first()
-        m.directors.add(d)
+        if d:
+            try:
+                m.directors.add(d)
+            except IntegrityError:
+                print('Director')
+                print(d.pk)
     for category in movie.categories.all():
         c = Category.objects.filter(name__iexact=category.name).first()
-        m.categories.add(c)
+        if c:
+            try:
+                m.categories.add(c)
+            except IntegrityError:
+                print('Category')
+                print(c.pk)
     for link in movie.links.all():
         m.links.get_or_create(host=link.host, episode_nr=link.episode_nr, language=link.language, link=link.link)
     for translation in movie.translations.all():
