@@ -266,7 +266,7 @@ def scrape_movies():
 def scrape_series():
     # TODO: save series on the go, not just at the finish
     pool_size = min(cpu_count() * 8, calculate_last_series_page() - 1)
-    pool_size = 2  # seems to be a max connection set at hubmovies.cc (508 errors)
+    pool_size = 4  # seems to be a max connection set at hubmovies.cc (508 errors)
     # pool_size = 2
     pages = list(range(1, calculate_last_series_page()))
     # pages = list(range(1, 3))

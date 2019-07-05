@@ -27,8 +27,11 @@ subprocess.call(["cp", "../db_big.sqlite3", dir_name])
 # create new db
 subprocess.call(["python", "../manage.py", "migrate"])
 # cleanup
-subprocess.call(["rm", FILMEZZ_DATA_FILE])
-subprocess.call(["rm", HUBMOVIE_DATA_FILE])
+try:
+    subprocess.call(["rm", FILMEZZ_DATA_FILE])
+    subprocess.call(["rm", HUBMOVIE_DATA_FILE])
+except Exception:
+    pass
 
 # SCRAPE
 # TODO: update serials
