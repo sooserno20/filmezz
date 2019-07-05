@@ -67,8 +67,8 @@ def scrape_part(page):
         soup = BeautifulSoup(response.text, 'lxml')
         links = [link.get('href') for link in soup.find(class_='movie-list').find_all('a')]
         series_links = [link for link in links if link[8:-7] in SERIES_IN_DB]
-        links = [link.get('href') for link in soup.find(class_='movie-list').find_all('a')]
-                 # if link.get('href') not in MOVIES_ALREADY_CRAWLED2]
+        links = [link.get('href') for link in soup.find(class_='movie-list').find_all('a')
+                 if link.get('href') not in MOVIES_ALREADY_CRAWLED2]
         links = list(set(links + series_links))
         timeouts = 0
         for link in links:
@@ -235,14 +235,14 @@ def scrape():
     # pool_size = 2
     pages = list(range(1, calculate_last_page()))
     # for debugging comment out this
-    pool = Pool(pool_size)
-    pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
-    pool.close()
-    pool.join()
+    # pool = Pool(pool_size)
+    # pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
+    # pool.close()
+    # pool.join()
     # for debugging
-    # scrape_part(22)
-    # for i in range(1, 507):
-    #     scrape_part(i)
+    scrape_part(22)
+    for i in range(1, 507):
+        scrape_part(i)
 
 
 def calculate_last_page():
