@@ -35,7 +35,7 @@ except Exception:
 
 # SCRAPE
 # TODO: update serials
-if subprocess.call(["python", "scrape_filmezz_eu5.py"]):
+if subprocess.call(["python", "scrape_filmezz_eu6.py"]):
     print('Filmezz scraper failed')
     sys.exit(1)
 subprocess.call(["cp", FILMEZZ_DATA_FILE, dir_name])

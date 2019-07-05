@@ -92,8 +92,8 @@ def scrape_part(page):
                 name, hungarian_name = hungarian_name, name  # use the english name as main
                 if name == 'Linkek a filmhez':
                     name = hungarian_name
-                movie_links_page = soup_detail.find(class_='content-box').find(class_='btn-primary').attrs['onclick']
-                movie_links_page = re.findall('https://videohouse.me/index.php\?id=\d+', movie_links_page)[0]
+                movie_links_page = soup_detail.find(class_='content-box').find(class_='btn-primary').attrs['href']
+                # movie_links_page = re.findall('https://videohouse.me/index.php\?id=\d+', movie_links_page)[0]
                 response = requests.get(movie_links_page, headers=HEADERS, timeout=TIMEOUT)
                 if response.status_code != 200:
                     raise Exception("Links site with status: {}".format(response.status_code))
@@ -235,14 +235,14 @@ def scrape():
     # pool_size = 2
     pages = list(range(1, calculate_last_page()))
     # for debugging comment out this
-    # pool = Pool(pool_size)
-    # pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
-    # pool.close()
-    # pool.join()
+    pool = Pool(pool_size)
+    pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
+    pool.close()
+    pool.join()
     # for debugging
-    scrape_part(22)
-    for i in range(1, 507):
-        scrape_part(i)
+    # scrape_part(22)
+    # for i in range(1, 507):
+    #     scrape_part(i)
 
 
 def calculate_last_page():
