@@ -223,7 +223,7 @@ def scrape_part(page):
                 time_taken = t2 - t1
                 est_time = time_taken * (calculate_last_page() - cpu_count()) / cpu_count()
                 print('Time estimated: {}'.format(est_time))
-
+        print('Page done {}'.format(page))
         return result
 
     else:
@@ -235,14 +235,14 @@ def scrape():
     # pool_size = 2
     pages = list(range(1, calculate_last_page()))
     # for debugging comment out this
-    # pool = Pool(pool_size)
-    # pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
-    # pool.close()
-    # pool.join()
+    pool = Pool(pool_size)
+    pool.map(func=scrape_part, iterable=pages, chunksize=int(len(pages) / pool_size))
+    pool.close()
+    pool.join()
     # for debugging
-    scrape_part(22)
-    for i in range(1, 507):
-        scrape_part(i)
+    # scrape_part(22)
+    # for i in range(1, 507):
+    #     scrape_part(i)
 
 
 def calculate_last_page():

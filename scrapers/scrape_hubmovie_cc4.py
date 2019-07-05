@@ -140,6 +140,7 @@ def scrape_movie_part(page):
                 print('Time estimated: {}'.format(est_time))
     else:
         print('Status {}'.format(response.status_code))
+    print('Hub page done {}'.format(page))
     return result
 
 
@@ -242,6 +243,7 @@ def scrape_series_part(page):
                 est_time = time_taken * (calculate_last_movie_page() - cpu_count()) / cpu_count()
                 print('Time estimated: {}'.format(est_time))
 
+        print('Hub series page done {}'.format(page))
         return result
 
     else:
