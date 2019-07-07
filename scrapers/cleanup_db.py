@@ -9,8 +9,12 @@ sys.path.append(project_path)
 os.environ['DJANGO_SETTINGS_MODULE'] = 'filmezz.settings'
 django.setup()
 
-from core.models import Category
+from core.models import Category, Movie
 
+
+Movie.objects.filter(links__isnull=True).delete()
+# filmezz.eu user avatars
+Movie.objects.filter(image_url__icontains='eu/avatar').update(image_url='')
 Category.objects.filter(movies__isnull=True).delete()
 
 CATEGORY_DICT = {'romantikus': 'Romance', 'vígjáték': 'Comedy', 'krimi': 'Crime', 'háborús': 'War',
