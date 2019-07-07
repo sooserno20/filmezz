@@ -185,3 +185,44 @@ OTHER FILM SITES:
 https://123movie.cc/ -- 412,467 visits / day
 https://moovie.cc/   -- 29,779 visits / day
 filmezz.eu           -- 89,035 visits / day
+
+
+verify db data: categories, movie descriptions, movies without categories;links;images
+update packages
+sync code with pythonanywhere
+copy over db
+
+todo:
+HIDE WHOIS INFO
+PUT IN LEGAL INFO
+create email @mxhost, put on site
+update sitemap and upload
+facebook page
+middleware to stop too much requests or throttling
+user auth, comments
+send in user links
+imdb auto sync/api
+
+10. future development
+ 10.1. |autodetect broken links (maybe 404 response?) (host specific?)
+ 10.2. block users with more than 100 requests (crawlers) (middleware?) (if this is implemented then there is no need for 10.3?)
+ 10.3. users login, reg, comments (break this into smaller parts) (if 10.2. can be implemented then skip this)
+ 10.4. +newest movies, serials
+ 10.5. sorting
+ 10.6. imdb api
+  10.6.1. fill missing data hubmovie import from https://www.imdb.com/interfaces/
+  10.6.2. seo internationalization https://www.youtube.com/watch?v=P1-3V6UrO3E 7:50
+ 10.8. future seo optimizations https://www.youtube.com/watch?v=P1-3V6UrO3E
+ 10.9. scraper https://123movie.cc/ -- 412,467 visits / day
+ 10.a. scraper https://moovie.cc/   -- 29,779 visits / day
+ 10.b. middleware to log ip and info?
+ 10.c. +cloudflare for flood protection
+ 10.d. !!!!put in legal info (copy from filmezz google translate)
+11. advertising
+ 11.1. facebook page
+ 11.2. script to post on filmezz.eu, and others (research)
+ 11.3. message to facebook friends to like page (think about a message)
+ 11.4. payed advertising
+  11.4.a. google ads?? (is it legal)
+  11.4.b. search for instagram, twitter contacts and pay them to post (advertise) site
+ 11.5. emails

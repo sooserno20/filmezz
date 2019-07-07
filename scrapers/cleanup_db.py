@@ -17,7 +17,7 @@ CATEGORY_DICT = {'romantikus': 'Romance', 'vígjáték': 'Comedy', 'krimi': 'Cri
                  'katasztrófafilm': 'Disaster', 'zenés': 'Music', 'misztikus': 'Mystery', 'animáció': 'Animation',
                  'dráma': 'Drama', 'történelmi': 'history', 'családi': 'Family', 'akció': 'Action',
                  'dokumentum': 'Documentary', 'tv-sorozat': 'TV Series', 'életrajzi': 'Biography',
-                 'ázsiai': 'Asian', 'kaland': 'Adventure'}
+                 'ázsiai': 'Asian', 'kaland': 'Adventure', 'magyar film': 'Hungarian'}
 
 for category in Category.objects.all():
     if category.name.lower() in CATEGORY_DICT:
