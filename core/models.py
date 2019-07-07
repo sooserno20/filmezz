@@ -15,6 +15,8 @@ class Movie(models.Model):
     watch_nr = models.PositiveIntegerField(default=0, db_index=True)
     duration = models.PositiveSmallIntegerField(null=True, blank=False)
     slug = models.SlugField(null=True, blank=True)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         ordering = ['title']
@@ -47,6 +49,8 @@ class MovieLink(models.Model):
     episode_nr = models.CharField(null=True, blank=True, max_length=15)
     link = models.URLField()
     verified = models.BooleanField(default=False)
+    created_at = models.DateTimeField(auto_now_add=True, null=True, blank=True)
+    updated_at = models.DateTimeField(auto_now=True, null=True, blank=True)
 
     class Meta:
         ordering = ['episode_nr']
