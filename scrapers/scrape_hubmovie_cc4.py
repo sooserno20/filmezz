@@ -140,6 +140,7 @@ def scrape_movie_part(page):
                 print('Time estimated: {}'.format(est_time))
     else:
         print('Status {}'.format(response.status_code))
+    print('Hub page done {}'.format(page))
     return result
 
 
@@ -242,6 +243,7 @@ def scrape_series_part(page):
                 est_time = time_taken * (calculate_last_movie_page() - cpu_count()) / cpu_count()
                 print('Time estimated: {}'.format(est_time))
 
+        print('Hub series page done {}'.format(page))
         return result
 
     else:
@@ -266,7 +268,7 @@ def scrape_movies():
 def scrape_series():
     # TODO: save series on the go, not just at the finish
     pool_size = min(cpu_count() * 8, calculate_last_series_page() - 1)
-    pool_size = 2  # seems to be a max connection set at hubmovies.cc (508 errors)
+    pool_size = 4  # seems to be a max connection set at hubmovies.cc (508 errors)
     # pool_size = 2
     pages = list(range(1, calculate_last_series_page()))
     # pages = list(range(1, 3))

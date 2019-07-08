@@ -85,11 +85,13 @@ for director in Director.objects.using('db2').all():
         print('Multiple objects for: ' + director.name)
 
 count = 0
+count_create = 0
 for movie in Movie.objects.using('db2').all():
     try:
         m = Movie.objects.get(title__iexact=movie.title.lower())
     except Movie.DoesNotExist:
         create_movie(movie)
+        count_create += 1
     except Movie.MultipleObjectsReturned:
         print('Multiple objects for: ' + movie.title)
         count += 1
@@ -98,3 +100,4 @@ for movie in Movie.objects.using('db2').all():
         count += 1
 
 print('Existing movies {}'.format(count))
+print('New movies {}'.format(count_create))
