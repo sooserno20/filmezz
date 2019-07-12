@@ -187,31 +187,29 @@ https://moovie.cc/   -- 29,779 visits / day
 filmezz.eu           -- 89,035 visits / day
 
 
-verify db data: categories, movie descriptions, movies without categories;links;images
-update packages
-sync code with pythonanywhere
-copy over db
++verify db data: categories, movie descriptions, movies without categories;links;images
++update packages
++sync code with pythonanywhere
++copy over db
 
 todo:
 HIDE WHOIS INFO
 PUT IN LEGAL INFO
 create email @mxhost, put on site
-update sitemap and upload
++update sitemap and upload (google search console)
 facebook page
-middleware to stop too much requests or throttling
+|middleware to stop too much requests or throttling (django-throttle-requests, no user ip logging)
 user auth, comments
 send in user links
 imdb auto sync/api
 
 10. future development
  10.1. |autodetect broken links (maybe 404 response?) (host specific?)
- 10.2. block users with more than 100 requests (crawlers) (middleware?) (if this is implemented then there is no need for 10.3?)
+ 10.2. +block users with more than 100 requests (crawlers) (middleware?) (if this is implemented then there is no need for 10.3?)
  10.3. users login, reg, comments (break this into smaller parts) (if 10.2. can be implemented then skip this)
  10.4. +newest movies, serials
  10.5. sorting
- 10.6. imdb api
-  10.6.1. fill missing data hubmovie import from https://www.imdb.com/interfaces/
-  10.6.2. seo internationalization https://www.youtube.com/watch?v=P1-3V6UrO3E 7:50
+ 10.6.2. seo internationalization https://www.youtube.com/watch?v=P1-3V6UrO3E 7:50
  10.8. future seo optimizations https://www.youtube.com/watch?v=P1-3V6UrO3E
  10.9. scraper https://123movie.cc/ -- 412,467 visits / day
  10.a. scraper https://moovie.cc/   -- 29,779 visits / day

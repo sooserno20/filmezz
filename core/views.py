@@ -2,8 +2,11 @@ from urllib.parse import quote
 
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.utils.decorators import method_decorator
 from django.views.generic import DetailView, ListView
 from django.db.models import Q, F
+from throttle.decorators import throttle
+
 from .models import Movie, Category, MovieLink
 import unicodedata
 import random
@@ -22,6 +25,10 @@ def sort_accented_list(a_list):
 class MovieList(ListView):
     model = Movie
     paginate_by = 12
+
+    @method_decorator(throttle(zone='default'))
+    def dispatch(self, *args, **kwargs):
+        return super(MovieList, self).dispatch(*args, **kwargs)
 
     def get_context_data(self, *, object_list=None, **kwargs):
         data = super().get_context_data(**kwargs)
@@ -85,6 +92,7 @@ class MovieList(ListView):
 class MovieDetail(DetailView):
     model = Movie
 
+    @method_decorator(throttle(zone='default'))
     def get(self, request, *args, **kwargs):
         response = super(MovieDetail, self).get(self, request, *args, **kwargs)
         self.object.watch_nr = F('watch_nr') + 1

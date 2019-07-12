@@ -163,6 +163,22 @@ LOGGING = {'version': 1, 'disable_existing_loggers': False, 'formatters': {'verb
 STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 # django_heroku.settings(locals())
 
+
+THROTTLE_ZONES = {
+    'default': {
+        'VARY': 'throttle.zones.RemoteIP',
+        'NUM_BUCKETS': 2,  # Number of buckets worth of history to keep. Must be at least 2
+        'BUCKET_INTERVAL': 10,  # Period of time to enforce limits.
+        'BUCKET_CAPACITY': 4,  # Maximum number of requests allowed within BUCKET_INTERVAL
+    },
+}
+
+# Where to store request counts.
+THROTTLE_BACKEND = 'throttle.backends.cache.CacheBackend'
+
+# Force throttling when DEBUG=True
+THROTTLE_ENABLED = True
+
 # Cloudinary settings using python code. Run before pycloudinary is used.
 # import cloudinary
 # cloudinary.config(
@@ -170,7 +186,7 @@ STATICFILES_STORAGE = 'whitenoise.storage.CompressedManifestStaticFilesStorage'
 #   api_key = '549734456738837',
 #   api_secret = 'NdVMYoTN3bb3cQHfAVOCdgGYksk'
 # )
-TEMPLATE_DEBUG = True
+TEMPLATE_DEBUG = DEBUG
 
 try:
     import local_settings
