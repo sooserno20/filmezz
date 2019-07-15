@@ -303,18 +303,38 @@ def scrape_series():
 
 def calculate_last_movie_page():
     """Calculate last page with binary search"""
-    # TODO: implement logic
-    # last_page = 1000
-    # response = requests.get(START_URL + str(last_page))
-    # soup = BeautifulSoup(response.text, 'lxml')
-    # links = soup.select('#movies_cont > a')
-    # while not links:
-    return 417
+    first_page = 0
+    last_page = 10000
+    while first_page + 1 < last_page:
+        search_page = (first_page + last_page) // 2
+        response = requests.get('{}{}'.format(MOVIES_URL, search_page))
+        soup = BeautifulSoup(response.text, 'lxml')
+        links = [link.get('href') for link in soup.find(id='movies_cont').find_all('a')]
+
+        if not links:
+            last_page = search_page
+        else:
+            first_page = search_page
+
+    return last_page
 
 
 def calculate_last_series_page():
     """Calculate last page with binary search"""
-    return 64
+    first_page = 0
+    last_page = 10000
+    while first_page + 1 < last_page:
+        search_page = (first_page + last_page) // 2
+        response = requests.get('{}{}'.format(SERIES_URL, search_page))
+        soup = BeautifulSoup(response.text, 'lxml')
+        links = [link.get('href') for link in soup.find(id='movies_cont').find_all('a')]
+
+        if not links:
+            last_page = search_page
+        else:
+            first_page = search_page
+
+    return last_page
 
 
 if __name__ == "__main__":

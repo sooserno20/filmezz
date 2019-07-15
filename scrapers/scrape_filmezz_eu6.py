@@ -247,14 +247,20 @@ def scrape():
 
 def calculate_last_page():
     """Calculate last page with binary search"""
-    # TODO: implement logic
-    # last_page = 1000
-    # response = requests.get(START_URL + str(last_page))
-    # soup = BeautifulSoup(response.text, 'lxml')
-    # links = soup.select('#movies_cont > a')
-    # while not links:
-    # return 507
-    return 660
+    first_page = 0
+    last_page = 10000
+    while first_page + 1 < last_page:
+        search_page = (first_page + last_page) // 2
+        response = requests.get('{}?p={}'.format(MOVIES_URL, search_page))
+        soup = BeautifulSoup(response.text, 'lxml')
+        links = soup.find(class_='movie-list')
+
+        if not links:
+            last_page = search_page
+        else:
+            first_page = search_page
+
+    return last_page
 
 
 if __name__ == "__main__":
