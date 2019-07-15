@@ -216,6 +216,10 @@ imdb auto sync/api
  10.b. middleware to log ip and info?
  10.c. +cloudflare for flood protection
  10.d. !!!!put in legal info (copy from filmezz google translate)
+ 10.e. +hubmovie scraper series store in movies already crawled, resuming from that
+ 10.f. refactor hubmovie scraper
+ 10.g. refactor filmezz.eu scraper
+ 10.h. calculate last page in scrapers
 11. advertising
  11.1. facebook page
  11.2. script to post on filmezz.eu, and others (research)
