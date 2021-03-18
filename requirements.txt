@@ -4,7 +4,7 @@ Django==1.11.22
 django-throttle-requests==0.5.5
 lxml==4.2.5
 mock==2.0.0
-PILLOW==5.2.0
+PILLOW==8.1.1
 pytesseract==0.2.4
 pytz==2018.5
 requests==2.22.0
