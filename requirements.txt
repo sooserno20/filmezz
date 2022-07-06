@@ -2,7 +2,7 @@ beautifulsoup4==4.6.3
 cloudinary==1.12.0
 Django==1.11.22
 django-throttle-requests==0.5.5
-lxml==4.2.5
+lxml==4.9.1
 mock==2.0.0
 PILLOW==5.2.0
 pytesseract==0.2.4
